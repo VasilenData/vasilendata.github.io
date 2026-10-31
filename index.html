@@ -24,7 +24,6 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
 .mono{font-family:var(--mono);font-size:.8125rem;letter-spacing:0}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 ::-webkit-scrollbar{width:12px;height:12px}::-webkit-scrollbar-thumb{background:var(--rule);border:3px solid var(--paper);border-radius:8px}::-webkit-scrollbar-track{background:var(--paper)}
-
 :root{--paper:#111315;--surface:#181B1E;--ink:#ECEFF1;--muted:#A3ACB3;--rule:#2B3035;--signal:#7EE0B8;--signal-ink:#7EE0B8;--teal:#8FB8FF;--teal-soft:#23344D;--on-signal:#0B1A14;--band:#181B1E;--band-ink:#ECEFF1;--band-muted:#A3ACB3}
 .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
 .skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 14px;z-index:9}.skip:focus{left:8px}
@@ -134,7 +133,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <g><rect class="box" x="20" y="22" width="220" height="40" rx="3"/><text x="36" y="47">Hacker News API</text></g>
 <g><rect class="box" x="20" y="132" width="300" height="56" rx="3"/><text x="36" y="156">raw_snapshots</text><text class="sub" x="36" y="175">append-only history, never overwritten</text></g>
 <g><rect class="box" x="80" y="262" width="340" height="52" rx="3"/><text x="96" y="285">dbt: stg_snapshots &#8594; fct_stories</text><text class="sub" x="96" y="302">&#8594; 4 marts in DuckDB</text></g>
-<g><rect class="gate" x="140" y="372" width="300" height="48" rx="3"/><text class="gate-t" x="156" y="393">15 data tests</text><text class="gate-t" x="156" y="409" style="font-size:11.5px;opacity:.85">failing tests block the dashboard update</text></g>
+<g><rect class="gate" x="140" y="372" width="300" height="48" rx="3"/><text class="gate-t" x="156" y="393">27 data tests</text><text class="gate-t" x="156" y="409" style="font-size:11.5px;opacity:.85">failing tests block the dashboard update</text></g>
 <g><text class="sub" x="360" y="47">Airflow DAG (local)</text><text class="sub" x="360" y="63">GitHub Actions (every 3h)</text><path class="dash" d="M355 54H245"/></g>
 </svg>
 <figcaption class="cap">HN Pulse, the flagship project: <a href="https://vasilendata.github.io/hn-pulse/">see it running</a>.</figcaption>
@@ -142,10 +141,19 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 </div>
 
 <section id="work"><div class="wrap">
-<div class="head"><h2>Selected projects</h2><p class="lede">Portfolio projects across engineering, analytics and predictive modelling.</p></div>
+<div class="head"><h2>Selected projects</h2><p class="lede">Projects across streaming, data quality, benchmarking, retrieval, analytics and predictive modelling.</p></div>
 <article class="proj flag"><div><span class="live">Flagship, live</span><h3>HN Pulse</h3><span class="kind">An orchestrated data pipeline with a live dashboard</span></div>
-<div><p>Hacker News API &#8594; dbt models with 15 automated tests &#8594; DuckDB &#8594; dashboard refreshed on a schedule. Airflow DAG for orchestration, GitHub Actions for CI and publishing.</p><span class="stack">Python · dbt · Airflow · DuckDB · GitHub Actions</span></div>
+<div><p>Hacker News API &#8594; dbt models under enforced data contracts with 27 automated tests &#8594; DuckDB &#8594; dashboard refreshed on a schedule. Airflow DAG for orchestration, GitHub Actions for CI and publishing.</p><span class="stack">Python · dbt · Airflow · DuckDB · GitHub Actions</span></div>
 <a class="go" href="https://vasilendata.github.io/hn-pulse/" target="_blank" rel="noopener">View live dashboard<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj"><div><h3>Wikipedia Streaming Lakehouse</h3><span class="kind">Streaming data engineering</span></div>
+<div><p>Live Wikipedia edits flow through Kafka and Spark Structured Streaming into a Parquet lakehouse, queried with DuckDB. Late and malformed events are handled and tested end to end on real Kafka; Terraform for AWS is validated in CI but not deployed.</p><span class="stack">Kafka · Spark Structured Streaming · DuckDB · Terraform</span></div>
+<a class="go" href="https://github.com/VasilenData/wiki-stream-lakehouse" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj"><div><h3>Four-Engine Benchmark on 79M Rows</h3><span class="kind">Performance engineering</span></div>
+<div><p>The same four queries on DuckDB, Polars, pandas and Spark over 79 million NYC taxi trips, with every answer cross-checked. DuckDB took 1.4 s against 32.8 s for pandas, and the real-data pitfalls are documented and tested.</p><span class="stack">DuckDB · Polars · pandas · Spark</span></div>
+<a class="go" href="https://github.com/VasilenData/taxi-engines-benchmark" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj"><div><h3>Retrieval Evaluation for RAG</h3><span class="kind">AI engineering</span></div>
+<div><p>BM25, Qdrant vector search, rank fusion and a cross-encoder reranker compared on 2,000 labelled questions: recall@1 rose from 76% to 86% with reranking. Retrieval only, no language model.</p><span class="stack">Qdrant · BM25 · fastembed · Python</span></div>
+<a class="go" href="https://github.com/VasilenData/rag-retrieval-eval" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
 <article class="proj"><div><h3>Tech Job Market ETL Pipeline</h3><span class="kind">Data engineering</span></div>
 <div><p>Automates daily hiring trend extraction from public APIs, stages the data in a normalized PostgreSQL schema, and runs through GitHub Actions.</p><span class="stack">Python · PostgreSQL · Pandas · GitHub Actions</span></div>
 <a class="go" href="https://github.com/VasilenData/tech-job-market-etl" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
