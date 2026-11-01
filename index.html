@@ -141,13 +141,22 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 </div>
 
 <section id="work"><div class="wrap">
-<div class="head"><h2>Selected projects</h2><p class="lede">Projects across streaming, data quality, benchmarking, retrieval, analytics and predictive modelling.</p></div>
+<div class="head"><h2>Selected projects</h2><p class="lede">Projects across data platforms, streaming, machine learning in production, benchmarking, retrieval, analytics and predictive modeling.</p></div>
 <article class="proj flag"><div><span class="live">Flagship, live</span><h3>HN Pulse</h3><span class="kind">An orchestrated data pipeline with a live dashboard</span></div>
 <div><p>Hacker News API &#8594; dbt models under enforced data contracts with 27 automated tests &#8594; DuckDB &#8594; dashboard refreshed on a schedule. Airflow DAG for orchestration, GitHub Actions for CI and publishing.</p><span class="stack">Python · dbt · Airflow · DuckDB · GitHub Actions</span></div>
 <a class="go" href="https://vasilendata.github.io/hn-pulse/" target="_blank" rel="noopener">View live dashboard<span aria-hidden="true"> &#8599;</span></a></article>
 <article class="proj"><div><h3>Wikipedia Streaming Lakehouse</h3><span class="kind">Streaming data engineering</span></div>
 <div><p>Live Wikipedia edits flow through Kafka and Spark Structured Streaming into a Parquet lakehouse, queried with DuckDB. Late and malformed events are handled and tested end to end on real Kafka; Terraform for AWS is validated in CI but not deployed.</p><span class="stack">Kafka · Spark Structured Streaming · DuckDB · Terraform</span></div>
 <a class="go" href="https://github.com/VasilenData/wiki-stream-lakehouse" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj"><div><h3>NYC Taxi Data Platform</h3><span class="kind">Production-style data platform</span></div>
+<div><p>31.6 million taxi trips through Dagster and dbt with enforced contracts, a quarantine table that keeps every rejected row and its reason, and a quality gate that refuses a corrupted month. 10 months build in 62 s.</p><span class="stack">Dagster · dbt · DuckDB · Docker · GitHub Actions</span></div>
+<a class="go" href="https://github.com/VasilenData/nyc-taxi-data-platform" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj"><div><h3>Taxi Trip Duration Service</h3><span class="kind">End-to-end ML prediction service</span></div>
+<div><p>A LightGBM model with 62% lower error than a distance-and-speed baseline on a held-out future month (3.52 vs 9.33 min), served through a validated FastAPI with MLflow tracking, a champion/challenger registry and drift monitoring.</p><span class="stack">LightGBM · FastAPI · MLflow · Docker</span></div>
+<a class="go" href="https://github.com/VasilenData/taxi-eta-service" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj"><div><h3>Evaluated AI Research Assistant</h3><span class="kind">LLM evaluation</span></div>
+<div><p>A local 1.5B model answering from 2,835 recent arXiv abstracts, with every component measured. Retrieval lifts answers containing the reference fact from 3.8% to 50.6%, a gate stops all fabricated-topic answers, and a claim checker whose own accuracy (85.5%) is reported.</p><span class="stack">llama.cpp · BM25 · fastembed · NLI judge</span></div>
+<a class="go" href="https://github.com/VasilenData/research-assistant-eval" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
 <article class="proj"><div><h3>Four-Engine Benchmark on 79M Rows</h3><span class="kind">Performance engineering</span></div>
 <div><p>The same four queries on DuckDB, Polars, pandas and Spark over 79 million NYC taxi trips, with every answer cross-checked. DuckDB took 1.4 s against 32.8 s for pandas, and the real-data pitfalls are documented and tested.</p><span class="stack">DuckDB · Polars · pandas · Spark</span></div>
 <a class="go" href="https://github.com/VasilenData/taxi-engines-benchmark" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
@@ -171,7 +180,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <div class="job"><div><h3>Data Analyst</h3><p class="org">Influencer Marketing Hub</p><span class="when">Nov 2023 to Jun 2025</span></div><p>Automated Python and Tableau KPI reporting for 15+ stakeholders, built API data workflows, and supported campaign analysis and A/B testing.</p></div>
 <div class="job"><div><h3>Data Administrator / Operations Analyst</h3><p class="org">TapIn Platforms, Inc.</p><span class="when">Oct 2021 to Nov 2023</span></div><p>Managed relational data, used Excel and SQL for operational analysis, and proposed a solution to centralize internal knowledge.</p></div>
 <div class="job"><div><h3>Operations &amp; Data Assistant</h3><p class="org">CoEfficient &amp; NPC</p><span class="when">Jul 2019 to Sep 2021</span></div><p>Digitized business records, validated CRM, inventory, and financial data, and performed monthly data reconciliations.</p></div>
-<div class="job"><div><h3>Professional Coach and Player</h3><p class="org">Valorant Friends League &amp; Community</p><span class="when">Mar 2020 to Jun 2025</span></div><p>Reached the #1 global VALORANT ranking, substituted for a Tier 1 organisation, and won multiple international LAN tournaments across Europe.</p></div>
+<div class="job"><div><h3>Professional Coach and Player</h3><p class="org">Valorant Friends League &amp; Community</p><span class="when">2020 to 2025, alongside full-time roles</span></div><p>Reached the #1 global VALORANT ranking, substituted for a Tier 1 organization, and won multiple international LAN tournaments across Europe.</p></div>
 </div></section>
 
 <section id="about"><div class="wrap">
