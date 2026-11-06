@@ -27,6 +27,28 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0}
 :root{--paper:#111315;--surface:#181B1E;--ink:#ECEFF1;--muted:#A3ACB3;--rule:#2B3035;--signal:#7EE0B8;--signal-ink:#7EE0B8;--teal:#8FB8FF;--teal-soft:#23344D;--on-signal:#0B1A14;--band:#181B1E;--band-ink:#ECEFF1;--band-muted:#A3ACB3}
 .wrap{max-width:1160px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
 .skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 14px;z-index:9}.skip:focus{left:8px}
+
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 8px}
+.chip{font:600 .875rem var(--body);color:var(--ink);background:transparent;border:1.5px solid var(--rule);border-radius:999px;padding:8px 16px;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.chip:hover{border-color:var(--signal)}
+.chip[aria-pressed=true]{background:var(--signal);border-color:var(--signal);color:var(--on-signal)}
+.count{margin-left:auto;color:var(--muted);font:.8125rem var(--mono)}
+.proj[hidden]{display:none}
+.alt{margin:20px 0 0;color:var(--muted);font-size:.9375rem}
+.kbtn{margin-left:auto;margin-right:20px;display:inline-flex;gap:10px;align-items:center;background:var(--surface);color:var(--muted);border:1px solid var(--rule);border-radius:6px;padding:7px 10px 7px 14px;font:500 .875rem var(--body);cursor:pointer;transition:border-color .2s,color .2s}
+.kbtn:hover{color:var(--ink);border-color:var(--signal)}
+kbd{font:500 .75rem var(--mono);border:1px solid var(--rule);border-radius:4px;padding:2px 6px;color:var(--ink);background:var(--paper)}
+dialog.pal{width:min(620px,calc(100vw - 32px));margin:12vh auto auto;padding:0;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:10px;box-shadow:0 24px 80px rgba(0,0,0,.55)}
+dialog.pal::backdrop{background:rgba(8,9,10,.72)}
+.pal input{width:100%;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--rule);padding:18px 20px;font:500 1.0625rem var(--body);outline:none}
+.pal input::placeholder{color:var(--muted)}
+.pal ul{list-style:none;margin:0;padding:8px;max-height:min(52vh,420px);overflow:auto}
+.pal li{display:flex;justify-content:space-between;gap:16px;align-items:baseline;padding:11px 12px;border-radius:6px;cursor:pointer}
+.pal li small{color:var(--muted);font:.8125rem var(--mono);white-space:nowrap}
+.pal li[aria-selected=true]{background:var(--teal-soft)}
+.pal .none{padding:18px 20px;color:var(--muted);cursor:default}
+.pal .foot{display:flex;gap:16px;padding:10px 20px;border-top:1px solid var(--rule);color:var(--muted);font-size:.8125rem}
+@media(max-width:900px){.kbtn{display:none}.count{margin-left:0;width:100%}}
 /* nav */
 .nav{border-bottom:1px solid var(--rule);background:var(--paper);position:sticky;top:0;z-index:5}
 .navin{display:flex;align-items:center;justify-content:space-between;gap:24px;height:64px}
@@ -116,6 +138,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <a class="skip" href="#work">Skip to projects</a>
 <header class="nav"><div class="wrap navin"><a class="brand" href="#top">Vasilen Kanchev</a>
 <nav class="navlinks" aria-label="Sections"><a href="#work">Projects</a><a href="#experience">Experience</a><a href="#about">About</a><a href="#skills">Toolkit</a><a href="#contact">Contact</a></nav>
+<button type="button" class="kbtn" id="pal-open" aria-haspopup="dialog">Jump to <kbd>Ctrl K</kbd></button>
 <div class="avail"><i></i><span>Open to roles, full-time preferred</span></div></div></header>
 <main id="top">
 <div class="wrap hero">
@@ -124,6 +147,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <h1>Reliable data pipelines, <em>shipped.</em></h1>
 <p class="intro">Data Engineer and Chief Revenue Officer with 7 years across operations, analytics and engineering. I build tested, automated data systems and lead the teams that use them: 80 employees today and 150 before. Open to full-time roles in data engineering and data leadership, with a longer-term interest in ML and AI.</p>
 <div class="cta"><a class="btn primary" href="#work">Explore my work</a><a class="btn" href="./vasilen-kanchev-cv.pdf">Download CV (PDF)</a></div>
+<p class="alt">Hiring for analytics or BI? <a href="./vasilen-kanchev-cv-analytics.pdf">Read the analytics CV (PDF)</a></p>
 </div>
 <figure style="margin:0">
 <svg class="lineage" viewBox="0 0 580 440" role="img" aria-labelledby="lt ld">
@@ -131,9 +155,9 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <path class="edge" d="M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372"/>
 <path class="flow" pathLength="1" style="--len:1" d="M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372" />
 <g><rect class="box" x="20" y="22" width="220" height="40" rx="3"/><text x="36" y="47">Hacker News API</text></g>
-<g><rect class="box" x="20" y="132" width="300" height="56" rx="3"/><text x="36" y="156">raw_snapshots</text><text class="sub" x="36" y="175">append-only history, never overwritten</text></g>
+<g><rect class="box" x="20" y="132" width="340" height="56" rx="3"/><text x="36" y="156">raw_snapshots</text><text class="sub" x="36" y="175">append-only history, never overwritten</text></g>
 <g><rect class="box" x="80" y="262" width="340" height="52" rx="3"/><text x="96" y="285">dbt: stg_snapshots &#8594; fct_stories</text><text class="sub" x="96" y="302">&#8594; 4 marts in DuckDB</text></g>
-<g><rect class="gate" x="140" y="372" width="300" height="48" rx="3"/><text class="gate-t" x="156" y="393">27 data tests</text><text class="gate-t" x="156" y="409" style="font-size:11.5px;opacity:.85">failing tests block the dashboard update</text></g>
+<g><rect class="gate" x="140" y="372" width="360" height="48" rx="3"/><text class="gate-t" x="156" y="393">27 data tests</text><text class="gate-t" x="156" y="409" style="font-size:11.5px;opacity:.85">failing tests block the dashboard update</text></g>
 <g><text class="sub" x="360" y="47">Airflow DAG (local)</text><text class="sub" x="360" y="63">GitHub Actions (every 3h)</text><path class="dash" d="M355 54H245"/></g>
 </svg>
 <figcaption class="cap">HN Pulse, the flagship project: <a href="https://vasilendata.github.io/hn-pulse/">see it running</a>.</figcaption>
@@ -142,37 +166,38 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 
 <section id="work"><div class="wrap">
 <div class="head"><h2>Selected projects</h2><p class="lede">Projects across data platforms, streaming, machine learning in production, benchmarking, retrieval, analytics and predictive modeling.</p></div>
-<article class="proj flag"><div><span class="live">Flagship, live</span><h3>HN Pulse</h3><span class="kind">An orchestrated data pipeline with a live dashboard</span></div>
+<div class="filters" role="group" aria-label="Filter projects by role type"><button type="button" class="chip" aria-pressed="true" data-f="all">All projects</button><button type="button" class="chip" aria-pressed="false" data-f="de">Data engineering</button><button type="button" class="chip" aria-pressed="false" data-f="an">Analytics and modeling</button><button type="button" class="chip" aria-pressed="false" data-f="ml">ML and AI</button><span class="count" id="fcount" aria-live="polite"></span></div>
+<article class="proj flag" data-cat="de an"><div><span class="live">Flagship, live</span><h3>HN Pulse</h3><span class="kind">An orchestrated data pipeline with a live dashboard</span></div>
 <div><p>Hacker News API &#8594; dbt models under enforced data contracts with 27 automated tests &#8594; DuckDB &#8594; dashboard refreshed on a schedule. Airflow DAG for orchestration, GitHub Actions for CI and publishing.</p><span class="stack">Python · dbt · Airflow · DuckDB · GitHub Actions</span></div>
 <a class="go" href="https://vasilendata.github.io/hn-pulse/" target="_blank" rel="noopener">View live dashboard<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Wikipedia Streaming Lakehouse</h3><span class="kind">Streaming data engineering</span></div>
+<article class="proj" data-cat="de"><div><h3>Wikipedia Streaming Lakehouse</h3><span class="kind">Streaming data engineering</span></div>
 <div><p>Live Wikipedia edits flow through Kafka and Spark Structured Streaming into a Parquet lakehouse, queried with DuckDB. Late and malformed events are handled and tested end to end on real Kafka; Terraform for AWS is validated in CI but not deployed.</p><span class="stack">Kafka · Spark Structured Streaming · DuckDB · Terraform</span></div>
 <a class="go" href="https://github.com/VasilenData/wiki-stream-lakehouse" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>NYC Taxi Data Platform</h3><span class="kind">Production-style data platform</span></div>
+<article class="proj" data-cat="de"><div><h3>NYC Taxi Data Platform</h3><span class="kind">Production-style data platform</span></div>
 <div><p>31.6 million taxi trips through Dagster and dbt with enforced contracts, a quarantine table that keeps every rejected row and its reason, and a quality gate that refuses a corrupted month. 10 months build in 62 s.</p><span class="stack">Dagster · dbt · DuckDB · Docker · GitHub Actions</span></div>
 <a class="go" href="https://github.com/VasilenData/nyc-taxi-data-platform" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Taxi Trip Duration Service</h3><span class="kind">End-to-end ML prediction service</span></div>
+<article class="proj" data-cat="ml"><div><h3>Taxi Trip Duration Service</h3><span class="kind">End-to-end ML prediction service</span></div>
 <div><p>A LightGBM model with 62% lower error than a distance-and-speed baseline on a held-out future month (3.52 vs 9.33 min), served through a validated FastAPI with MLflow tracking, a champion/challenger registry and drift monitoring.</p><span class="stack">LightGBM · FastAPI · MLflow · Docker</span></div>
 <a class="go" href="https://github.com/VasilenData/taxi-eta-service" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Evaluated AI Research Assistant</h3><span class="kind">LLM evaluation</span></div>
+<article class="proj" data-cat="ml"><div><h3>Evaluated AI Research Assistant</h3><span class="kind">LLM evaluation</span></div>
 <div><p>A local 1.5B model answering from 2,835 recent arXiv abstracts, with every component measured. Retrieval lifts answers containing the reference fact from 3.8% to 50.6%, a gate stops all fabricated-topic answers, and a claim checker whose own accuracy (85.5%) is reported.</p><span class="stack">llama.cpp · BM25 · fastembed · NLI judge</span></div>
 <a class="go" href="https://github.com/VasilenData/research-assistant-eval" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><span class="live">Live explorer</span><h3>E-Commerce Finance Mart</h3><span class="kind">Data modeling, SQL and Excel on transactional data</span></div>
+<article class="proj" data-cat="an de"><div><span class="live">Live explorer</span><h3>E-Commerce Finance Mart</h3><span class="kind">Data modeling, SQL and Excel on transactional data</span></div>
 <div><p>1.07 million real invoice lines from a UK online retailer, normalized into a star schema and reconciled to the penny, with finance and customer marts, an Excel workbook of live formulas and a self-serve sales explorer. It found that 44% of credit-note value was orders entered and cancelled within the hour. Public practice data, not employer data.</p><span class="stack">DuckDB · SQL · Excel · Python · 31 tests</span></div>
 <a class="go" href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/" target="_blank" rel="noopener">Open the explorer<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Four-Engine Benchmark on 79M Rows</h3><span class="kind">Performance engineering</span></div>
+<article class="proj" data-cat="de"><div><h3>Four-Engine Benchmark on 79M Rows</h3><span class="kind">Performance engineering</span></div>
 <div><p>The same four queries on DuckDB, Polars, pandas and Spark over 79 million NYC taxi trips, with every answer cross-checked. DuckDB took 1.4 s against 32.8 s for pandas, and the real-data pitfalls are documented and tested.</p><span class="stack">DuckDB · Polars · pandas · Spark</span></div>
 <a class="go" href="https://github.com/VasilenData/taxi-engines-benchmark" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Retrieval Evaluation for RAG</h3><span class="kind">AI engineering</span></div>
+<article class="proj" data-cat="ml"><div><h3>Retrieval Evaluation for RAG</h3><span class="kind">AI engineering</span></div>
 <div><p>BM25, Qdrant vector search, rank fusion and a cross-encoder reranker compared on 2,000 labeled questions: recall@1 rose from 76% to 86% with reranking. Retrieval only, no language model.</p><span class="stack">Qdrant · BM25 · fastembed · Python</span></div>
 <a class="go" href="https://github.com/VasilenData/rag-retrieval-eval" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Tech Job Market ETL Pipeline</h3><span class="kind">Data engineering</span></div>
+<article class="proj" data-cat="de"><div><h3>Tech Job Market ETL Pipeline</h3><span class="kind">Data engineering</span></div>
 <div><p>Automates daily hiring trend extraction from public APIs, stages the data in a normalized PostgreSQL schema, and runs through GitHub Actions.</p><span class="stack">Python · PostgreSQL · Pandas · GitHub Actions</span></div>
 <a class="go" href="https://github.com/VasilenData/tech-job-market-etl" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>E-Commerce Sales &amp; Logistics Dashboard</h3><span class="kind">Business intelligence</span></div>
+<article class="proj" data-cat="an"><div><h3>E-Commerce Sales &amp; Logistics Dashboard</h3><span class="kind">Business intelligence</span></div>
 <div><p>Live dashboard on five PostgreSQL views over 100,000+ orders: late deliveries cut review scores from 4.3 to 1.7, and slow regional states stand out.</p><span class="stack">SQL · PostgreSQL · Chart.js</span></div>
 <a class="go" href="https://github.com/VasilenData/ecommerce-logistics-dashboard" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj"><div><h3>Customer Churn Predictive Model</h3><span class="kind">Machine learning</span></div>
+<article class="proj" data-cat="ml an"><div><h3>Customer Churn Predictive Model</h3><span class="kind">Machine learning</span></div>
 <div><p>Supervised Random Forest classification with feature engineering on 7,043 telecom customers, reaching ROC-AUC 0.84 and 78% recall on churners.</p><span class="stack">Python · Scikit-Learn · Pandas</span></div>
 <a class="go" href="https://github.com/VasilenData/customer-churn-model" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
 </div></section>
@@ -218,4 +243,26 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 </main>
 <footer class="wrap foot"><span>&copy; <span id="year"></span> Vasilen Kanchev</span><a href="#top">Back to top</a></footer>
 <script>document.getElementById('year').textContent=new Date().getFullYear()</script>
+<dialog class="pal" id="pal" aria-label="Jump to a project, page or document"><input id="pal-q" type="text" role="combobox" aria-expanded="true" aria-controls="pal-list" placeholder="Search projects, pages and documents" autocomplete="off"><ul id="pal-list" role="listbox"></ul><div class="foot"><span><kbd>&#8593;</kbd> <kbd>&#8595;</kbd> move</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div></dialog>
+<script>
+(function(){
+var chips=[].slice.call(document.querySelectorAll('.chip')),projs=[].slice.call(document.querySelectorAll('.proj')),cnt=document.getElementById('fcount');
+function filt(f){var n=0;projs.forEach(function(p){var show=f==='all'||(p.dataset.cat||'').split(' ').indexOf(f)>-1;p.hidden=!show;if(show)n++});chips.forEach(function(c){c.setAttribute('aria-pressed',c.dataset.f===f)});cnt.textContent=n+' of '+projs.length+' projects'}
+chips.forEach(function(c){c.addEventListener('click',function(){filt(c.dataset.f);history.replaceState(null,'','#work')})});filt('all');
+var d=document.getElementById('pal'),q=document.getElementById('pal-q'),ul=document.getElementById('pal-list'),items=[],sel=0;
+var base=[['Projects','page','#work'],['Experience','page','#experience'],['About','page','#about'],['Toolkit','page','#skills'],['Contact','page','#contact'],['CV, data engineering (PDF)','document','./vasilen-kanchev-cv.pdf'],['CV, analytics (PDF)','document','./vasilen-kanchev-cv-analytics.pdf'],['LinkedIn','link','https://www.linkedin.com/in/vasilenkanchev/'],['GitHub','link','https://github.com/VasilenData'],['Email','link','mailto:vasilen.business@gmail.com']];
+function all(){var out=base.slice();projs.forEach(function(p){var h=p.querySelector('h3'),a=p.querySelector('a.go');if(h&&a)out.push([h.textContent,'project',a.getAttribute('href')])});return out}
+function draw(){var t=q.value.trim().toLowerCase();items=all().filter(function(i){return !t||i[0].toLowerCase().indexOf(t)>-1||i[1].indexOf(t)>-1});sel=0;ul.innerHTML='';
+if(!items.length){var n=document.createElement('li');n.className='none';n.textContent='Nothing matches that.';ul.appendChild(n);return}
+items.forEach(function(i,k){var li=document.createElement('li');li.setAttribute('role','option');li.setAttribute('aria-selected',k===0);var a=document.createElement('span');a.textContent=i[0];var b=document.createElement('small');b.textContent=i[1];li.appendChild(a);li.appendChild(b);li.addEventListener('click',function(){go(k)});ul.appendChild(li)})}
+function mark(){[].forEach.call(ul.children,function(li,k){li.setAttribute('aria-selected',k===sel);if(k===sel)li.scrollIntoView({block:'nearest'})})}
+function go(k){var i=items[k];if(!i)return;d.close();if(i[2].charAt(0)==='#'){location.hash=i[2]}else{window.open(i[2],i[1]==='link'&&i[2].indexOf('mailto')<0||i[1]==='project'?'_blank':'_self','noopener')}}
+function open(){if(typeof d.showModal!=='function')return;q.value='';draw();d.showModal();q.focus()}
+document.getElementById('pal-open').addEventListener('click',open);
+document.addEventListener('keydown',function(e){if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();d.open?d.close():open()}});
+q.addEventListener('input',draw);
+q.addEventListener('keydown',function(e){if(e.key==='ArrowDown'){e.preventDefault();sel=Math.min(sel+1,items.length-1);mark()}else if(e.key==='ArrowUp'){e.preventDefault();sel=Math.max(sel-1,0);mark()}else if(e.key==='Enter'){e.preventDefault();go(sel)}});
+d.addEventListener('click',function(e){if(e.target===d)d.close()});
+})();
+</script>
 </body></html>
