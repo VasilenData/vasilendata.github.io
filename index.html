@@ -153,7 +153,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 </div>
 <figure style="margin:0">
 <svg class="lineage" viewBox="0 0 580 440" role="img" aria-labelledby="lt ld">
-<title id="lt">HN Pulse pipeline lineage</title><desc id="ld">Hacker News API feeds an append-only raw snapshot table, then dbt staging, fact and mart models. Fifteen tests gate publishing to a live dashboard. Airflow and GitHub Actions schedule the run.</desc>
+<title id="lt">HN Pulse pipeline lineage</title><desc id="ld">Hacker News API feeds an append-only raw snapshot table, then dbt staging, fact and mart models. 27 data tests gate publishing to a live dashboard. Airflow and GitHub Actions schedule the run.</desc>
 <path class="edge" d="M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372"/>
 <path class="flow" pathLength="1" style="--len:1" d="M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372" />
 <g><rect class="box" x="20" y="22" width="220" height="40" rx="3"/><text x="36" y="47">Hacker News API</text></g>
@@ -185,7 +185,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <div><p>A local 1.5B model answering from 2,835 recent arXiv abstracts, with every component measured. Retrieval lifts answers containing the reference fact from 3.8% to 50.6%, a gate stops all fabricated-topic answers, and a claim checker whose own accuracy (85.5%) is reported.</p><span class="stack">llama.cpp · BM25 · fastembed · NLI judge</span></div>
 <a class="go" href="https://github.com/VasilenData/research-assistant-eval" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
 <article class="proj" data-cat="an de"><div><span class="live">Live explorer and dashboard</span><h3>E-Commerce Finance Mart</h3><span class="kind">Data modeling, SQL and Excel on transactional data</span></div>
-<div><p>1.07 million real invoice lines from a UK online retailer, normalized into a star schema and reconciled to the penny, with finance and customer marts, an Excel workbook of live formulas and a self-serve sales explorer and a Tableau Public dashboard. It found that 44% of credit-note value was orders entered and cancelled within the hour. Public practice data, not employer data.</p><span class="stack">DuckDB · SQL · Excel · Python · 31 tests</span></div>
+<div><p>1.07 million real invoice lines from a UK online retailer, normalized into a star schema and reconciled to the penny, with finance and customer marts, an Excel workbook of live formulas and a self-serve sales explorer and a Tableau Public dashboard. It found that 44% of credit-note value was orders entered and cancelled within the hour. Public practice data, not employer data.</p><span class="stack">DuckDB · SQL · Excel · Python · 32 tests</span></div>
 <div class="gos"><a class="go" href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/" target="_blank" rel="noopener">Open the explorer<span aria-hidden="true"> &#8599;</span></a><a class="go" href="https://public.tableau.com/app/profile/vasilen.kanchev/viz/E-CommerceFinanceMartSalesDashboard/E-CommerceFinanceMartsalesdashboard" target="_blank" rel="noopener">Tableau dashboard<span aria-hidden="true"> &#8599;</span></a></div></article>
 <article class="proj" data-cat="de"><div><h3>Four-Engine Benchmark on 79M Rows</h3><span class="kind">Performance engineering</span></div>
 <div><p>The same four queries on DuckDB, Polars, pandas and Spark over 79 million NYC taxi trips, with every answer cross-checked. DuckDB took 1.4 s against 32.8 s for pandas, and the real-data pitfalls are documented and tested.</p><span class="stack">DuckDB · Polars · pandas · Spark</span></div>
@@ -222,10 +222,10 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <section id="skills"><div class="wrap">
 <div class="head"><h2>Toolkit</h2></div>
 <div class="tools">
-<div><h3>Code &amp; data</h3><ul><li>Python</li><li>Bash</li><li>Pandas</li><li>Scikit-Learn</li></ul></div>
-<div><h3>Databases &amp; BI</h3><ul><li>PostgreSQL</li><li>SQL</li><li>Tableau</li><li>Reporting</li></ul></div>
-<div><h3>Cloud &amp; delivery</h3><ul><li>AWS RDS</li><li>Docker</li><li>GitHub Actions</li><li>DuckDB</li></ul></div>
-<div><h3>Data engineering</h3><ul><li>dbt</li><li>Airflow</li><li>ETL pipelines</li><li>REST APIs</li><li>Data validation</li></ul></div>
+<div><h3>Code &amp; data</h3><ul><li>Python</li><li>Pandas</li><li>Polars</li><li>Scikit-Learn</li><li>Bash</li></ul></div>
+<div><h3>Databases &amp; BI</h3><ul><li>SQL, window functions</li><li>PostgreSQL</li><li>DuckDB</li><li>Dimensional modeling</li><li>Tableau</li><li>Excel</li></ul></div>
+<div><h3>Cloud &amp; delivery</h3><ul><li>AWS RDS</li><li>Docker</li><li>GitHub Actions</li><li>Terraform (validated)</li><li>MLflow</li><li>FastAPI</li></ul></div>
+<div><h3>Data engineering</h3><ul><li>dbt</li><li>Dagster</li><li>Airflow</li><li>Kafka</li><li>Spark</li><li>ELT pipelines</li><li>Data contracts</li><li>Data quality testing</li></ul></div>
 </div></div></section>
 
 <section><div class="wrap">
