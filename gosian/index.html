@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111315">
+<title>Case study: revenue vs cost tracking at Gosian Media</title>
+<meta name="description" content="How I built department-level revenue and cost tracking, a PostgreSQL pipeline and a cross-training model at Gosian Media, and what the numbers do and do not show.">
+<link rel="canonical" href="https://vasilendata.github.io/gosian/">
+<meta property="og:type" content="article"><meta property="og:title" content="Case study: revenue vs cost tracking at Gosian Media"><meta property="og:description" content="Department-level revenue and cost tracking, a PostgreSQL pipeline and cross-training, with honest limits."><meta property="og:url" content="https://vasilendata.github.io/gosian/"><meta property="og:image" content="https://vasilendata.github.io/og.png?v=2">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://vasilendata.github.io/og.png?v=2">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230E1A2B'/%3E%3Cpath d='M14 18l14 28 6-12M50 18L36 46' stroke='%23E8470F' stroke-width='6' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
+<link rel="preload" href="https://vasilendata.github.io/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+@font-face{font-family:'Bricolage Grotesque';src:url(https://vasilendata.github.io/fonts/bricolage-grotesque.woff2) format('woff2');font-weight:200 800;font-display:swap}
+@font-face{font-family:'Public Sans';src:url(https://vasilendata.github.io/fonts/public-sans.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url(https://vasilendata.github.io/fonts/jetbrains-mono.woff2) format('woff2');font-weight:100 800;font-display:swap}
+:root{--paper:#111315;--surface:#181B1E;--ink:#ECEFF1;--muted:#A3ACB3;--rule:#2B3035;--mint:#7EE0B8;--blue:#8FB4FF;--amber:#F0B86E;
+--display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--body:'Public Sans','Segoe UI',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,Consolas,monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.65 var(--body);-webkit-font-smoothing:antialiased}
+a{color:var(--mint);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{color:var(--ink)}
+:focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:2px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.wrap{max-width:46rem;margin:0 auto;padding:0 clamp(20px,5vw,32px)}
+.top{display:flex;justify-content:space-between;align-items:center;height:56px;border-bottom:1px solid var(--rule);font-size:.9375rem}
+.top a{color:var(--ink);text-decoration:none;font-weight:600}.top a:hover{color:var(--mint)}.top span{color:var(--muted)}
+header.pg{padding:clamp(40px,7vw,80px) 0 32px}
+h1{font-size:clamp(2.1rem,5.5vw,3.25rem);line-height:1.04;letter-spacing:-.03em;font-weight:700}
+.sub{margin:18px 0 0;color:var(--muted);font-size:1.125rem;max-width:38rem}
+.meta{margin:28px 0 0;padding:16px 0;border-top:1px solid var(--ink);border-bottom:1px solid var(--rule);display:flex;flex-wrap:wrap;gap:8px 36px;font-size:.9375rem}
+.meta dt{color:var(--muted);font-size:.8125rem}.meta dd{margin:0;font-weight:600}.meta div{min-width:8rem}
+section{padding:clamp(28px,5vw,48px) 0;border-bottom:1px solid var(--rule)}
+h2{font-size:1.5rem;line-height:1.15;letter-spacing:-.02em;margin-bottom:14px}
+p{margin:0 0 14px;max-width:40rem}
+.flow{margin:18px 0;padding:0;list-style:none;border-left:2px solid var(--rule)}
+.flow li{padding:6px 0 6px 18px;position:relative}.flow li::before{content:"";position:absolute;left:-6px;top:15px;width:10px;height:10px;border-radius:50%;background:var(--mint)}
+.flow b{font-family:var(--mono);font-size:.875rem;font-weight:500;color:var(--mint)}
+table{width:100%;border-collapse:collapse;font-size:.9375rem;margin:12px 0}
+th,td{padding:10px 12px 10px 0;border-bottom:1px solid var(--rule);text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600;font-size:.8125rem;border-bottom-color:var(--ink)}
+.note{border-left:3px solid var(--amber);padding:2px 0 2px 16px;color:var(--ink)}
+footer.f{padding:28px 0 64px;color:var(--muted);font-size:.9375rem}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style></head><body>
+<div class="wrap">
+<nav class="top" aria-label="Portfolio"><a href="https://vasilendata.github.io/">&larr; Vasilen Kanchev</a><span>Case study</span></nav>
+<header class="pg"><h1>Revenue versus cost, by department, in one place</h1>
+<p class="sub">At Gosian Media I built the tracking system, the database and the cross-training model that let leadership see which departments earn their cost, and move people to where they add the most.</p>
+<dl class="meta"><div><dt>Role</dt><dd>Chief Revenue Officer and Data Engineer</dd></div><div><dt>Since</dt><dd>June 2025</dd></div><div><dt>Team</dt><dd>80 employees</dd></div><div><dt>Stack</dt><dd>PostgreSQL on AWS RDS, Python, Docker, dbt</dd></div></dl></header>
+<main>
+<section><h2>The problem</h2>
+<p>Money in and money out were not tracked per department. Operational data lived in more than 30 spreadsheets, and keeping them current cost over 10 hours of manual data entry every week. Each department was staffed for one job, so a quiet department still carried its full cost.</p></section>
+<section><h2>What I built</h2>
+<p>A reporting path from the spreadsheets to one department view, with checks at each step:</p>
+<ol class="flow">
+<li><b>Spreadsheets</b> More than 30 files, migrated and retired as the source of truth.</li>
+<li><b>Python and Docker</b> Load scripts with validation, so a bad file is rejected instead of loaded.</li>
+<li><b>PostgreSQL on AWS RDS</b> One relational schema in place of the spreadsheets.</li>
+<li><b>dbt models and tests</b> Revenue and cost by department, with tests on the transformations.</li>
+<li><b>Department view</b> Revenue coming in versus cost going out, per department, against its KPIs.</li>
+</ol>
+<p>This is a simplified outline of the flow, not a diagram of the production system.</p></section>
+<section><h2>What I did with the data</h2>
+<p>Once each department showed its own revenue against its own cost, I could see which ones were strong on their KPIs and which had spare capacity. I cross-trained flexible staff to cover two roles, so capacity followed performance instead of staying fixed. I also recruited and trained more than 30 people myself and wrote the SOPs and training manuals that standardize onboarding.</p></section>
+<section><h2>Results</h2>
+<table><thead><tr><th>Measure</th><th>Result</th></tr></thead><tbody>
+<tr><td>Monthly revenue since I joined</td><td>About 7.5 times higher</td></tr>
+<tr><td>Cost of goods sold</td><td>Reduced by cross-training staff to cover two roles</td></tr>
+<tr><td>Manual data entry</td><td>More than 10 hours a week removed</td></tr>
+<tr><td>Spreadsheets migrated</td><td>More than 30</td></tr>
+<tr><td>People led</td><td>80 employees; 30+ recruited and trained by me</td></tr>
+</tbody></table></section>
+<section><h2>How to read these numbers</h2>
+<p class="note">These figures are reported by the company and were not independently audited. Revenue growth came from a whole team and market conditions. My contribution was the visibility, the database and the staffing model, not the whole result. Exact dollar figures are on my CV.</p></section>
+<section><h2>Why the code is not public</h2>
+<p>The production code and data belong to my employer. I rebuilt the same patterns on public data, where you can read and run everything:</p>
+<p><a href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/">Finance Mart explorer</a>: a star schema over 1.07 million invoice lines, reconciled to the penny, with 32 tests (public practice data, not employer data).<br>
+<a href="https://vasilendata.github.io/hn-pulse/">HN Pulse</a>: dbt models with 27 data tests that block a bad update from reaching the live dashboard.</p></section>
+</main>
+<footer class="f"><a href="https://vasilendata.github.io/">Back to the portfolio</a> &middot; <a href="https://vasilendata.github.io/vasilen-kanchev-cv.pdf">CV (PDF)</a> &middot; <a href="https://www.linkedin.com/in/vasilenkanchev/">LinkedIn</a></footer>
+</div></body></html>
