@@ -93,7 +93,7 @@ h2{font-size:clamp(2rem,4.2vw,3.25rem);line-height:1.04;letter-spacing:-.03em;fo
 .proj .kind{display:block;margin-top:10px;color:var(--muted);font-size:.9375rem}
 .proj p{margin:0 0 16px;max-width:38rem}
 .stack{font-family:var(--mono);font-size:.8125rem;color:var(--muted)}
-.proj .go{text-align:right;font-weight:600;align-self:center}
+.proj .go{text-align:right;font-weight:600;align-self:center}.proj .gos{display:flex;flex-direction:column;gap:10px;align-self:center}.proj .gos .go{align-self:auto}
 .proj.flag{padding-block:44px}.proj.flag h3{font-size:2.125rem}
 .live{display:inline-block;margin-bottom:12px;font:500 .8125rem var(--mono);color:var(--teal)}
 /* experience */
@@ -184,9 +184,9 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <article class="proj" data-cat="ml"><div><h3>Evaluated AI Research Assistant</h3><span class="kind">LLM evaluation</span></div>
 <div><p>A local 1.5B model answering from 2,835 recent arXiv abstracts, with every component measured. Retrieval lifts answers containing the reference fact from 3.8% to 50.6%, a gate stops all fabricated-topic answers, and a claim checker whose own accuracy (85.5%) is reported.</p><span class="stack">llama.cpp · BM25 · fastembed · NLI judge</span></div>
 <a class="go" href="https://github.com/VasilenData/research-assistant-eval" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
-<article class="proj" data-cat="an de"><div><span class="live">Live explorer</span><h3>E-Commerce Finance Mart</h3><span class="kind">Data modeling, SQL and Excel on transactional data</span></div>
-<div><p>1.07 million real invoice lines from a UK online retailer, normalized into a star schema and reconciled to the penny, with finance and customer marts, an Excel workbook of live formulas and a self-serve sales explorer. It found that 44% of credit-note value was orders entered and cancelled within the hour. Public practice data, not employer data.</p><span class="stack">DuckDB · SQL · Excel · Python · 31 tests</span></div>
-<a class="go" href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/" target="_blank" rel="noopener">Open the explorer<span aria-hidden="true"> &#8599;</span></a></article>
+<article class="proj" data-cat="an de"><div><span class="live">Live explorer and dashboard</span><h3>E-Commerce Finance Mart</h3><span class="kind">Data modeling, SQL and Excel on transactional data</span></div>
+<div><p>1.07 million real invoice lines from a UK online retailer, normalized into a star schema and reconciled to the penny, with finance and customer marts, an Excel workbook of live formulas and a self-serve sales explorer and a Tableau Public dashboard. It found that 44% of credit-note value was orders entered and cancelled within the hour. Public practice data, not employer data.</p><span class="stack">DuckDB · SQL · Excel · Python · 31 tests</span></div>
+<div class="gos"><a class="go" href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/" target="_blank" rel="noopener">Open the explorer<span aria-hidden="true"> &#8599;</span></a><a class="go" href="https://public.tableau.com/app/profile/vasilen.kanchev/viz/E-CommerceFinanceMartSalesDashboard/E-CommerceFinanceMartsalesdashboard" target="_blank" rel="noopener">Tableau dashboard<span aria-hidden="true"> &#8599;</span></a></div></article>
 <article class="proj" data-cat="de"><div><h3>Four-Engine Benchmark on 79M Rows</h3><span class="kind">Performance engineering</span></div>
 <div><p>The same four queries on DuckDB, Polars, pandas and Spark over 79 million NYC taxi trips, with every answer cross-checked. DuckDB took 1.4 s against 32.8 s for pandas, and the real-data pitfalls are documented and tested.</p><span class="stack">DuckDB · Polars · pandas · Spark</span></div>
 <a class="go" href="https://github.com/VasilenData/taxi-engines-benchmark" target="_blank" rel="noopener">Case study<span aria-hidden="true"> &#8599;</span></a></article>
