@@ -54,25 +54,25 @@
       "name": "NYC Taxi Data Platform",
       "stack": "Dagster, dbt, DuckDB",
       "url": "https://github.com/VasilenData/nyc-taxi-data-platform",
-      "text": "Processed 31.6M public taxi trips locally with reason-coded quarantine and reconciliation. Transactional replacements preserve the last successful month after a failed load; reruns and recovery are tested."
+      "text": "Built a Dagster/dbt pipeline with a recorded 31.6M-trip run, quarantine and reconciliation. Added atomic mart publication and tests that preserve the previous release after validation or process failures."
     },
     "streaming": {
       "name": "Wikipedia Streaming Lakehouse",
       "stack": "Kafka, Spark, Parquet",
       "url": "https://github.com/VasilenData/wiki-stream-lakehouse",
-      "text": "Built a local Kafka/Spark pipeline with watermark-bounded deduplication, malformed-event routing and checkpoint-reuse tests on real Kafka. AWS Terraform configuration is validated in CI."
+      "text": "Built a local Kafka/Spark pipeline with raw-event replay, watermark-bounded deduplication and committed-file reads. Real Kafka tests exercise forced-crash recovery and missing offsets; AWS Terraform is validated in CI."
     },
     "hn": {
       "name": "HN Pulse",
       "stack": "Python, dbt, DuckDB, GitHub Actions",
       "url": "https://vasilendata.github.io/hn-pulse/",
-      "text": "Built a scheduled API-to-dashboard pipeline with 27 dbt data tests and model contracts that gate publication. GitHub Actions runs the live schedule; Airflow demonstrates local orchestration."
+      "text": "Built a scheduled API-to-dashboard pipeline with 27 dbt tests and model contracts that gate publication. Added bounded API retries and a separate hourly check of published-data freshness."
     },
     "finance": {
       "name": "E-Commerce Finance Mart",
       "stack": "SQL, DuckDB, dimensional modeling",
       "url": "https://github.com/VasilenData/ecommerce-finance-mart",
-      "text": "Modeled 1.07M public retail invoice lines into a star schema and finance/customer marts. Reconciled kept and quarantined amounts to the source; added 14 blocking checks, an Excel workbook and a sales explorer."
+      "text": "Modeled 1.07M public invoice lines into a star schema with 14 blocking reconciliation checks. The release build recalculates Excel and compares 124 cached values with SQL before publishing a checksummed bundle."
     }
   },
   "variants": {
@@ -81,14 +81,14 @@
       "headline": "Data Engineer",
       "summary": "Data Engineer owning daily cash-flow reporting for an agency. Builds Python and SQL pipelines with dbt and PostgreSQL on AWS RDS; combines hands-on delivery with experience in operational reporting and business decisions.",
       "project_skills": "Kafka, Spark Structured Streaming, Dagster, DuckDB, GitHub Actions, dimensional modeling, Airflow (local)",
-      "projects": ["taxi", "streaming", "hn"]
+      "projects": ["taxi", "finance", "hn"]
     },
     "analytics-engineer": {
       "filename": "vasilen-kanchev-cv-analytics.pdf",
       "headline": "Analytics Engineer",
       "summary": "Data Engineer focused on SQL, dbt and business reporting. Owns an agency-wide daily cash-flow system and brings KPI reporting experience for 15+ stakeholders, financial modeling and source-to-mart reconciliation.",
       "project_skills": "Dimensional modeling, finance reconciliation, DuckDB, data contracts, GitHub Actions, Databricks SQL port",
-      "projects": ["finance", "hn", "taxi"]
+      "projects": ["finance", "taxi", "hn"]
     }
   }
 }
