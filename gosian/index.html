@@ -1,20 +1,21 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111315">
-<title>Case study: revenue vs cost tracking at Gosian Media</title>
+<title>From 30+ spreadsheets to tested data pipelines | Vasilen Kanchev</title>
 <meta name="description" content="How I built department-level revenue and cost tracking, a PostgreSQL pipeline and a cross-training model at Gosian Media, and what the numbers do and do not show.">
 <link rel="canonical" href="https://vasilendata.github.io/gosian/">
-<meta property="og:type" content="article"><meta property="og:title" content="Case study: revenue vs cost tracking at Gosian Media"><meta property="og:description" content="Department-level revenue and cost tracking, a PostgreSQL pipeline and cross-training, with honest limits."><meta property="og:url" content="https://vasilendata.github.io/gosian/"><meta property="og:image" content="https://vasilendata.github.io/og.png?v=3"><meta property="og:image:width" content="1731"><meta property="og:image:height" content="909">
+<meta property="og:type" content="article"><meta property="og:title" content="From 30+ spreadsheets to tested data pipelines"><meta property="og:description" content="Professional case study: Python, dbt and PostgreSQL on AWS RDS replaced 10+ hours of manual data entry each week."><meta property="og:url" content="https://vasilendata.github.io/gosian/"><meta property="og:image" content="https://vasilendata.github.io/og.png?v=3"><meta property="og:image:width" content="1731"><meta property="og:image:height" content="909">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://vasilendata.github.io/og.png?v=3">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230E1A2B'/%3E%3Cpath d='M14 18l14 28 6-12M50 18L36 46' stroke='%23E8470F' stroke-width='6' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
-<link rel="preload" href="https://vasilendata.github.io/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-@font-face{font-family:'Bricolage Grotesque';src:url(https://vasilendata.github.io/fonts/bricolage-grotesque.woff2) format('woff2');font-weight:200 800;font-display:swap}
-@font-face{font-family:'Public Sans';src:url(https://vasilendata.github.io/fonts/public-sans.woff2) format('woff2');font-weight:100 900;font-display:swap}
-@font-face{font-family:'JetBrains Mono';src:url(https://vasilendata.github.io/fonts/jetbrains-mono.woff2) format('woff2');font-weight:100 800;font-display:swap}
+@font-face{font-family:'Bricolage Grotesque';src:url(../fonts/bricolage-grotesque.woff2) format('woff2');font-weight:200 800;font-display:swap}
+@font-face{font-family:'Public Sans';src:url(../fonts/public-sans.woff2) format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'JetBrains Mono';src:url(../fonts/jetbrains-mono.woff2) format('woff2');font-weight:100 800;font-display:swap}
 :root{--paper:#111315;--surface:#181B1E;--ink:#ECEFF1;--muted:#A3ACB3;--rule:#2B3035;--mint:#7EE0B8;--blue:#8FB4FF;--amber:#F0B86E;
 --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;--body:'Public Sans','Segoe UI',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,Consolas,monospace}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
+.skip{position:fixed;left:-999px;top:8px;z-index:9;padding:10px 16px;background:var(--ink);color:var(--paper)}.skip:focus{left:8px}
 body{margin:0;background:var(--paper);color:var(--ink);font:400 1.0625rem/1.65 var(--body);-webkit-font-smoothing:antialiased}
 a{color:var(--mint);text-underline-offset:.2em;text-decoration-thickness:1px}a:hover{color:var(--ink)}
 :focus-visible{outline:2px solid var(--mint);outline-offset:3px;border-radius:2px}
@@ -40,19 +41,20 @@ th{color:var(--muted);font-weight:600;font-size:.8125rem;border-bottom-color:var
 footer.f{padding:28px 0 64px;color:var(--muted);font-size:.9375rem}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 </style></head><body>
+<a class="skip" href="#case-study">Skip to case study</a>
 <div class="wrap">
-<nav class="top" aria-label="Portfolio"><a href="https://vasilendata.github.io/">&larr; Vasilen Kanchev</a><span>Case study</span></nav>
-<header class="pg"><h1>Revenue versus cost, by department, in one place</h1>
-<p class="sub">At Gosian Media I built the tracking system, the database and the cross-training model that let leadership see which departments earn their cost, and move people to where they add the most.</p>
-<dl class="meta"><div><dt>Role</dt><dd>Chief Revenue Officer and Data Engineer</dd></div><div><dt>Since</dt><dd>June 2025</dd></div><div><dt>Team</dt><dd>80 employees</dd></div><div><dt>Stack</dt><dd>PostgreSQL on AWS RDS, Python, Docker, dbt</dd></div></dl></header>
-<main>
+<nav class="top" aria-label="Portfolio"><a href="../">&larr; Vasilen Kanchev</a><span>Case study</span></nav>
+<header class="pg"><h1>From 30+ spreadsheets to tested data pipelines</h1>
+<p class="sub">At Gosian Media, I migrated operational data into PostgreSQL on AWS RDS and built Python, Docker and dbt workflows that replaced more than 10 hours of manual data entry each week.</p>
+<dl class="meta"><div><dt>Official role</dt><dd>Data Engineer and Chief Revenue Officer</dd></div><div><dt>Since</dt><dd>June 2025</dd></div><div><dt>Setting</dt><dd>Commercial operations</dd></div><div><dt>Stack</dt><dd>PostgreSQL on AWS RDS, Python, Docker, dbt</dd></div></dl></header>
+<main id="case-study" tabindex="-1">
 <section><h2>The problem</h2>
 <p>Money in and money out were not tracked per department. Operational data lived in more than 30 spreadsheets, and keeping them current cost over 10 hours of manual data entry every week. Each department was staffed for one job, so a quiet department still carried its full cost.</p></section>
 <section><h2>What I built</h2>
 <p>A reporting path from the spreadsheets to one department view, with checks at each step:</p>
 <ol class="flow">
-<li><b>Spreadsheets</b> More than 30 files, migrated and retired as the source of truth.</li>
-<li><b>Python and Docker</b> Load scripts with validation, so a bad file is rejected instead of loaded.</li>
+<li><b>Spreadsheets</b> More than 30 files consolidated into a relational database.</li>
+<li><b>Python and Docker</b> Ingestion workflows with validation checks.</li>
 <li><b>PostgreSQL on AWS RDS</b> One relational schema in place of the spreadsheets.</li>
 <li><b>dbt models and tests</b> Revenue and cost by department, with tests on the transformations.</li>
 <li><b>Department view</b> Revenue coming in versus cost going out, per department, against its KPIs.</li>
@@ -60,18 +62,17 @@ footer.f{padding:28px 0 64px;color:var(--muted);font-size:.9375rem}
 <p>This is a simplified outline of the flow, not a diagram of the production system.</p></section>
 <section><h2>What I did with the data</h2>
 <p>Once each department showed its own revenue against its own cost, I could see which ones were strong on their KPIs and which had spare capacity. I cross-trained flexible staff to cover two roles, so capacity followed performance instead of staying fixed. I also recruited and trained more than 30 people myself and wrote the SOPs and training manuals that standardize onboarding.</p></section>
-<section><h2>Results</h2>
+<section><h2>Engineering results</h2>
 <table><thead><tr><th>Measure</th><th>Result</th></tr></thead><tbody>
-<tr><td>Monthly revenue since I joined</td><td>About 7.5 times higher</td></tr>
-<tr><td>Cost of goods sold</td><td>Reduced by cross-training staff to cover two roles</td></tr>
-<tr><td>Manual data entry</td><td>More than 10 hours a week removed</td></tr>
 <tr><td>Spreadsheets migrated</td><td>More than 30</td></tr>
-<tr><td>People led</td><td>80 employees; 30+ recruited and trained by me</td></tr>
+<tr><td>Manual data entry</td><td>More than 10 hours a week removed</td></tr>
+<tr><td>Reporting path</td><td>Python/dbt workflows and PostgreSQL on AWS RDS, with validation tests</td></tr>
 </tbody></table></section>
-<section><h2>How to read these numbers</h2>
-<p class="note">These figures are reported by the company and were not independently audited. Revenue growth came from a whole team and market conditions. My contribution was the visibility, the database and the staffing model, not the whole result. Exact dollar figures are on my CV.</p></section>
+<section><h2>Business context and attribution</h2>
+<p>Department-level revenue and cost tracking, combined with cross-training staff to cover two roles, reduced monthly cost of goods sold by approximately $10,000. My broader responsibilities included an 80-person operation and personally recruiting and training 30+ staff.</p>
+<p class="note">These are reported outcomes, not independently audited results. The cost reduction combines reporting and staffing changes; it is not solely a software saving. Company revenue grew about 7.5 times during this period, but that reflects the work of the wider team and market conditions, not a causal measure of my engineering contribution.</p></section>
 <section><h2>Why the code is not public</h2>
-<p>The production code and data belong to my employer. I rebuilt the same patterns on public data, where you can read and run everything:</p>
+<p>The production code and data belong to my employer. These separate projects demonstrate related engineering patterns on public data:</p>
 <p><a href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/">Finance Mart explorer</a>: a star schema over 1.07 million invoice lines, reconciled to the penny, with 32 tests (public practice data, not employer data).<br>
 <a href="https://vasilendata.github.io/hn-pulse/">HN Pulse</a>: dbt models with 27 data tests that block a bad update from reaching the live dashboard.</p></section>
 </main>
