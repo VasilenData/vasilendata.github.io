@@ -81,6 +81,10 @@ h1 em{font-style:normal;color:var(--signal)}
 .lineage .flow{fill:none;stroke:var(--signal);stroke-width:2.5;stroke-dasharray:1;stroke-dashoffset:0;animation:draw 2.2s cubic-bezier(.16,1,.3,1) .3s backwards}
 .lineage .dash{fill:none;stroke:var(--muted);stroke-width:1.25;stroke-dasharray:4 4}
 @keyframes draw{from{stroke-dashoffset:1}}
+.lineage .pkt{fill:var(--signal);offset-rotate:0deg;offset-distance:0%;opacity:0;animation:pkt 4.8s linear 2.6s infinite}
+.lineage .gate{animation:gate 4.8s ease-in-out 4.2s infinite}
+@keyframes pkt{0%{offset-distance:0%;opacity:0}6%{opacity:1}92%{opacity:1}100%{offset-distance:100%;opacity:0}}
+@keyframes gate{0%,18%,100%{stroke:var(--ink)}8%{stroke:var(--signal)}}
 .cap{margin:14px 0 0;color:var(--muted);font-size:.875rem}
 /* sections */
 section{padding-block:clamp(56px,8vw,104px);border-top:1px solid var(--rule)}
@@ -158,6 +162,7 @@ footer.foot{display:flex;justify-content:space-between;padding-block:24px;color:
 <title id="lt">HN Pulse pipeline lineage</title><desc id="ld">Hacker News API feeds an append-only raw snapshot table, then dbt staging, fact and mart models. 27 data tests gate publishing to a live dashboard. Airflow and GitHub Actions schedule the run.</desc>
 <path class="edge" d="M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372"/>
 <path class="flow" pathLength="1" style="--len:1" d="M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372" />
+<circle class="pkt" r="4.5" style="offset-path:path('M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372');animation-delay:0s"/><circle class="pkt" r="4.5" style="offset-path:path('M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372');animation-delay:1.6s"/><circle class="pkt" r="4.5" style="offset-path:path('M110 62V92H70V132M70 188V218H130V262M130 314V344H190V372');animation-delay:3.2s"/>
 <g><rect class="box" x="20" y="22" width="220" height="40" rx="3"/><text x="36" y="47">Hacker News API</text></g>
 <g><rect class="box" x="20" y="132" width="340" height="56" rx="3"/><text x="36" y="156">raw_snapshots</text><text class="sub" x="36" y="175">append-only history, never overwritten</text></g>
 <g><rect class="box" x="80" y="262" width="340" height="52" rx="3"/><text x="96" y="285">dbt: stg_snapshots &#8594; fct_stories</text><text class="sub" x="96" y="302">&#8594; 4 marts in DuckDB</text></g>
