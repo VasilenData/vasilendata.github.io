@@ -1,0 +1,94 @@
+{
+  "name": "Vasilen Kanchev",
+  "contact": "Porto, Portugal | Remote Europe | EU citizen | +351 931 673 151",
+  "email": "vasilen.business@gmail.com",
+  "links": [
+    ["LinkedIn", "https://www.linkedin.com/in/vasilenkanchev/"],
+    ["GitHub", "https://github.com/VasilenData"],
+    ["Portfolio", "https://vasilendata.github.io/"]
+  ],
+  "professional_skills": "Python, SQL, PostgreSQL, dbt, Docker, AWS RDS, ETL, API integration, data validation, Tableau, Excel",
+  "experience": [
+    {
+      "title": "Data Engineer and Chief Revenue Officer",
+      "company": "Gosian Media LLC",
+      "dates": "Jun 2025 - Present",
+      "bullets": [
+        "Replaced 10+ hours of manual data entry each week by migrating 30+ spreadsheets to PostgreSQL on AWS RDS and building Dockerized Python/dbt pipelines with validation tests.",
+        "Reduced monthly cost of goods sold by approximately $10,000 through department-level revenue and cost tracking and cross-training staff to cover two roles.",
+        "Created onboarding SOPs and training manuals for an 80-person team; personally recruited and trained 30+ staff."
+      ]
+    },
+    {
+      "title": "Data Analyst and Senior Supervisor",
+      "company": "Influencer Marketing Hub",
+      "dates": "Nov 2023 - Jun 2025",
+      "bullets": [
+        "Automated KPI reporting for 15+ stakeholders with Python and Tableau, built ETL workflows from social media APIs, and supported campaign A/B tests."
+      ]
+    },
+    {
+      "title": "Data Administrator / Operations Analyst",
+      "company": "TapIn Platforms, Inc.",
+      "dates": "Oct 2021 - Nov 2023 | Full-time",
+      "bullets": [
+        "Maintained relational data through daily validation and updates; used SQL and Excel to report user growth and answer product and marketing data requests."
+      ]
+    },
+    {
+      "title": "Operations & Data Assistant",
+      "company": "CoEfficient & NPC",
+      "dates": "Jul 2019 - Sep 2021 | Part-time",
+      "bullets": [
+        "Digitized legacy records and completed monthly reconciliations across 40+ CRM, inventory and finance tables."
+      ]
+    }
+  ],
+  "education": [
+    "University of Suffolk | BSc (Hons) Computer Science | Expected 2027",
+    "UNISA | Mathematics and Statistics Higher Certificate (Distinction) | 2024",
+    "Google Data Analytics Professional Certificate; IBM Data Engineering Certificate"
+  ],
+  "projects": {
+    "taxi": {
+      "name": "NYC Taxi Data Platform",
+      "stack": "Dagster, dbt, DuckDB",
+      "url": "https://github.com/VasilenData/nyc-taxi-data-platform",
+      "text": "Processed 31.6M public taxi trips in a local pipeline with reason-coded quarantine, reconciliation and rerun/failure tests. Full-data benchmark conditions and sample CI scope are documented."
+    },
+    "streaming": {
+      "name": "Wikipedia Streaming Lakehouse",
+      "stack": "Kafka, Spark, Parquet",
+      "url": "https://github.com/VasilenData/wiki-stream-lakehouse",
+      "text": "Built a local streaming pipeline with watermark-bounded deduplication and checkpoint-reuse integration tests on real Kafka. Terraform is validated in CI; cloud deployment is outside the demonstrated scope."
+    },
+    "hn": {
+      "name": "HN Pulse",
+      "stack": "Python, dbt, DuckDB, GitHub Actions",
+      "url": "https://vasilendata.github.io/hn-pulse/",
+      "text": "Built a scheduled API-to-dashboard pipeline with 27 dbt data tests and model contracts that gate publication. GitHub Actions runs the live schedule; Airflow demonstrates local orchestration."
+    },
+    "finance": {
+      "name": "E-Commerce Finance Mart",
+      "stack": "SQL, DuckDB, dimensional modeling",
+      "url": "https://github.com/VasilenData/ecommerce-finance-mart",
+      "text": "Modeled 1.07M public retail invoice lines into a star schema and finance/customer marts. Reconciled kept and quarantined amounts to the source; added 14 blocking checks, an Excel workbook and a sales explorer."
+    }
+  },
+  "variants": {
+    "data-engineer": {
+      "filename": "vasilen-kanchev-cv.pdf",
+      "headline": "Data Engineer",
+      "summary": "Data Engineer building tested Python and SQL pipelines with dbt and PostgreSQL on AWS RDS. Migrated 30+ spreadsheets and automated workflows saving 10+ hours weekly. Earlier analytics and operations work informs practical data models and reporting.",
+      "project_skills": "Kafka, Spark Structured Streaming, Dagster, DuckDB, GitHub Actions, dimensional modeling, Airflow (local)",
+      "projects": ["taxi", "streaming", "hn"]
+    },
+    "analytics-engineer": {
+      "filename": "vasilen-kanchev-cv-analytics.pdf",
+      "headline": "Analytics Engineer",
+      "summary": "Data Engineer focused on SQL, dbt and reliable business reporting. Migrated 30+ spreadsheets to PostgreSQL on AWS RDS and automated workflows saving 10+ hours weekly. Brings operational context, KPI reporting for 15+ stakeholders and public finance-modeling projects.",
+      "project_skills": "Dimensional modeling, finance reconciliation, DuckDB, data contracts, GitHub Actions, Databricks SQL port",
+      "projects": ["finance", "hn", "taxi"]
+    }
+  }
+}
