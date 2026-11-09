@@ -2,6 +2,8 @@
 
 Both public CVs are generated from `cv_data.json`, which keeps employment dates, titles, contact details and shared achievements consistent. The Data Engineer version selects batch, streaming and scheduled pipeline projects. The Analytics Engineer version selects the finance mart, scheduled dbt pipeline and batch platform.
 
+Each company has a total tenure and, where applicable, dated `roles` in reverse chronological order. The bullets belong to the company tenure; do not assign them to an earlier role unless their timing is known. Gosian's October 2026 cash-flow launch occurred during the CRO role, with continued hands-on data engineering. Keep the same role dates in the portfolio, GitHub profile and LinkedIn.
+
 From the repository root:
 
 ```sh
