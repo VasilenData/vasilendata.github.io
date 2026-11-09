@@ -1,18 +1,25 @@
-# CV source and rebuild
+# CV source and build
 
-Both public CVs are generated from `cv_data.json`, which keeps employment dates, titles, contact details and shared achievements consistent. The Data Engineer version selects batch, streaming and scheduled pipeline projects. The Analytics Engineer version selects the finance mart, scheduled dbt pipeline and batch platform.
+The two one-page CVs share factual source data in `cv_data.json`. Each variant has its own headline, summary, three selected projects and portfolio skills.
 
-Each company has a total tenure and, where applicable, dated `roles` in reverse chronological order. The bullets belong to the company tenure; do not assign them to an earlier role unless their timing is known. Gosian's October 2026 cash-flow launch occurred during the CRO role, with continued hands-on data engineering. Keep the same role dates in the portfolio, GitHub profile and LinkedIn.
+The layout adapts the single-column structure of [Jake's Resume](https://github.com/jakegut/resume) to a Python/ReportLab renderer. It uses a centered contact header, aligned role dates, restrained section rules and hanging bullets. The MIT attribution is in `TEMPLATE_NOTICE.txt`.
 
-From the repository root:
+## Build
+
+Install `reportlab` and `pypdf`, then run from the repository root:
 
 ```sh
-python -m pip install reportlab pypdf
-python tools/build_cv.py
+python tools/build_cv.py --font-dir C:/Windows/Fonts
 ```
 
-For embedded Arial fonts, pass `--font-dir` with a directory containing `arial.ttf` and `arialbd.ttf`. Without it, the builder uses standard PDF Helvetica fonts. Font metrics can differ, so inspect the rendered PDFs after rebuilding.
+The renderer requires and embeds Calibri regular, bold and italic TTF files. Supply your own licensed font directory if building elsewhere; the repository does not redistribute the font files. Font substitution can alter wrapping, so the build reports missing fonts instead of silently substituting a different layout.
 
-The builder checks that each file is one page, that key facts remain extractable, and that every contact/project link is clickable. It fails on missing text or replacement characters. Visual review is still required before publishing: check both pages for clipping, spacing and readable text.
+Optional `--source` and `--output-dir` arguments allow a separate source file or preview directory. Default output files are `vasilen-kanchev-cv.pdf` and `vasilen-kanchev-cv-analytics.pdf` at the repository root.
 
-Keep the portfolio demonstrations distinct from professional experience. Only add metrics, technologies or role claims that can be supported; record new benchmark conditions in the project repository rather than treating a single runtime as a universal guarantee.
+## Verification
+
+The build checks one page per variant, extractable role titles and promotion dates, key factual text, three projects per variant, and all contact/project link annotations. It fails rather than reducing the body font if content exceeds one page.
+
+Render both PDFs and inspect them before publishing. Check spacing, wrapping, legibility, page boundaries and contact/project destinations; successful text extraction alone does not establish visual quality or guarantee ATS compatibility.
+
+Keep professional and portfolio tools separate. Preserve qualifiers such as `estimated`, the October 2026 cash-flow go-live date and the distinction between the earlier local NYC benchmark and subsequent publication changes. Formatting edits are not evidence of new experience or independent technical performance.
