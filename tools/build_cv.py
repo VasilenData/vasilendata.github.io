@@ -29,7 +29,7 @@ def build(source, output_dir, font_dir=None):
         pdfmetrics.registerFont(TTFont(bold, str(font_dir / "arialbd.ttf")))
         pdfmetrics.registerFontFamily(regular, normal=regular, bold=bold)
     base = ParagraphStyle("body", fontName=regular, fontSize=10.5,
-                          leading=12.6, textColor=colors.HexColor("#181818"),
+                          leading=12.6, textColor=colors.HexColor("#181B1E"),
                           spaceAfter=3, alignment=TA_LEFT)
     styles = {
         "body": base,
@@ -41,7 +41,8 @@ def build(source, output_dir, font_dir=None):
                                   leading=12, spaceAfter=2),
         "section": ParagraphStyle("section", parent=base, fontName=bold,
                                   fontSize=11.3, leading=14, spaceBefore=7,
-                                  spaceAfter=5, keepWithNext=True),
+                                  spaceAfter=5, keepWithNext=True,
+                                  textColor=colors.HexColor("#17634C")),
         "job": ParagraphStyle("job", parent=base, fontName=bold,
                               spaceBefore=3, spaceAfter=1, keepWithNext=True),
         "meta": ParagraphStyle("meta", parent=base, textColor=colors.HexColor("#444444"),
@@ -73,7 +74,12 @@ def build(source, output_dir, font_dir=None):
         add("<b>Portfolio:</b> " + escape(variant["project_skills"]), raw=True)
         add("Experience", "section")
         for job in data["experience"]:
-            block = [p(job["title"], "job"), p(job["company"] + " | " + job["dates"], "meta")]
+            block = [p(job["company"] + " | " + job["dates"], "job")]
+            if "roles" in job:
+                block.extend(p(role["title"] + " | " + role["dates"], "meta")
+                             for role in job["roles"])
+            else:
+                block.append(p(job["title"], "meta"))
             block.extend(p("- " + bullet, "bullet") for bullet in job["bullets"])
             story.append(KeepTogether(block))
         add("Selected projects", "section")
@@ -99,6 +105,11 @@ def build(source, output_dir, font_dir=None):
         for required in (data["name"], "30+", "10+", "15+", "40+", "Expected 2027"):
             if required not in text:
                 raise ValueError(f"Missing extractable text: {required}")
+        for job in data["experience"]:
+            for role in job.get("roles", []):
+                for required in (role["title"], role["dates"]):
+                    if required not in text:
+                        raise ValueError(f"Missing extractable career progression: {required}")
         if "\ufffd" in text:
             raise ValueError("Invalid replacement character in PDF text extraction")
         links = [a.get_object().get("/A", {}).get("/URI")
