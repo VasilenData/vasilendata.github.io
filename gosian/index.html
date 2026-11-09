@@ -1,12 +1,12 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111315">
-<title>From 30+ spreadsheets to tested data pipelines | Vasilen Kanchev</title>
+<title>From 30+ spreadsheets to daily cash-flow reporting | Vasilen Kanchev</title>
 <meta name="description" content="How I built department-level revenue and cost tracking, a PostgreSQL pipeline and a cross-training model at Gosian Media, and what the numbers do and do not show.">
 <link rel="canonical" href="https://vasilendata.github.io/gosian/">
-<meta property="og:type" content="article"><meta property="og:title" content="From 30+ spreadsheets to tested data pipelines"><meta property="og:description" content="Professional case study: Python, dbt and PostgreSQL on AWS RDS saved an estimated 10+ hours of manual data entry each week."><meta property="og:url" content="https://vasilendata.github.io/gosian/"><meta property="og:image" content="https://vasilendata.github.io/og.png?v=3"><meta property="og:image:width" content="1731"><meta property="og:image:height" content="909">
-<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://vasilendata.github.io/og.png?v=3">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230E1A2B'/%3E%3Cpath d='M14 18l14 28 6-12M50 18L36 46' stroke='%23E8470F' stroke-width='6' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
+<meta property="og:type" content="article"><meta property="og:title" content="From 30+ spreadsheets to daily cash-flow reporting"><meta property="og:description" content="Professional case study: Python, dbt and PostgreSQL on AWS RDS saved an estimated 10+ hours of manual data entry each week."><meta property="og:url" content="https://vasilendata.github.io/gosian/"><meta property="og:image" content="https://vasilendata.github.io/gosian/preview.png?v=1"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://vasilendata.github.io/gosian/preview.png?v=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23111315'/%3E%3Cpath d='M14 18l14 28 6-12M50 18L36 46' stroke='%237EE0B8' stroke-width='6' fill='none' stroke-linecap='square'/%3E%3C/svg%3E">
 <link rel="preload" href="../fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
 <style>
 @font-face{font-family:'Bricolage Grotesque';src:url(../fonts/bricolage-grotesque.woff2) format('woff2');font-weight:200 800;font-display:swap}
@@ -44,9 +44,9 @@ footer.f{padding:28px 0 64px;color:var(--muted);font-size:.9375rem}
 <a class="skip" href="#case-study">Skip to case study</a>
 <div class="wrap">
 <nav class="top" aria-label="Portfolio"><a href="../">&larr; Vasilen Kanchev</a><span>Case study</span></nav>
-<header class="pg"><h1>From 30+ spreadsheets to tested data pipelines</h1>
+<header class="pg"><h1>From 30+ spreadsheets to daily cash-flow reporting</h1>
 <p class="sub">I built and maintain Gosian Media's agency-wide cash-flow reporting system. It has been live since October 2026 and refreshes daily, replacing fragmented spreadsheets with Python, dbt and PostgreSQL on AWS RDS.</p>
-<dl class="meta"><div><dt>Official role</dt><dd>Data Engineer and Chief Revenue Officer</dd></div><div><dt>Since</dt><dd>June 2025</dd></div><div><dt>Setting</dt><dd>Commercial operations</dd></div><div><dt>Stack</dt><dd>PostgreSQL on AWS RDS, Python, Docker, dbt</dd></div></dl></header>
+<dl class="meta"><div><dt>Current role</dt><dd>Chief Revenue Officer<br>June 2026 to present</dd></div><div><dt>Previous role</dt><dd>Data Engineer<br>June 2025 to May 2026</dd></div><div><dt>Technical ownership</dt><dd>Continued after promotion</dd></div><div><dt>Stack</dt><dd>PostgreSQL on AWS RDS, Python, Docker, dbt</dd></div></dl></header>
 <main id="case-study" tabindex="-1">
 <section><h2>The problem</h2>
 <p>Money in and money out were not tracked per department. Operational data lived in more than 30 spreadsheets, and keeping them current cost an estimated 10+ hours of manual data entry every week. Each department was staffed for one job, so a quiet department still carried its full cost.</p></section>
@@ -54,24 +54,25 @@ footer.f{padding:28px 0 64px;color:var(--muted);font-size:.9375rem}
 <p>A reporting path from the spreadsheets to department-level revenue and cost reporting:</p>
 <ol class="flow">
 <li><b>Spreadsheets</b> More than 30 files consolidated into a relational database.</li>
-<li><b>Python and Docker</b> Ingestion workflows with validation checks.</li>
+<li><b>Python and Docker</b> Ingestion workflows from the source spreadsheets.</li>
 <li><b>PostgreSQL on AWS RDS</b> One relational schema in place of the spreadsheets.</li>
-<li><b>dbt models and tests</b> Revenue and cost by department, with tests on the transformations.</li>
+<li><b>dbt models</b> Transformations for revenue and cost reporting by department.</li>
 <li><b>Department view</b> Revenue coming in versus cost going out, per department, against its KPIs.</li>
 </ol>
-<p>I built the cash-flow system and continue to maintain it. People across the agency use the outputs, which refresh daily. The implementation above is a simplified description; employer code and data are private.</p></section>
+<p>I built the cash-flow system and continue to maintain it. People across the agency use the outputs, which refresh daily. The October 2026 launch took place after my promotion to Chief Revenue Officer; I retained hands-on technical ownership. The implementation above is a simplified description; employer code and data are private.</p>
+<p class="note">Operating scope: daily refreshes since October 2026. This case study does not report a historical success rate or tested recovery time. Specific validation rules and the failure-handling procedure are outside the evidence presented here.</p></section>
 <section><h2>What I did with the data</h2>
-<p>Once each department showed its own revenue against its own cost, I could see which ones were strong on their KPIs and which had spare capacity. I cross-trained flexible staff to cover two roles, so capacity followed performance instead of staying fixed. I also recruited and trained more than 30 people myself and wrote the SOPs and training manuals that standardize onboarding.</p></section>
+<p>Once each department showed its own revenue against its own cost, I could see which ones were strong on their KPIs and which had spare capacity. I cross-trained flexible staff to cover two roles, so capacity followed performance instead of staying fixed.</p></section>
 <section><h2>Engineering results</h2>
 <table><thead><tr><th>Measure</th><th>Result</th></tr></thead><tbody>
 <tr><td>Spreadsheets migrated</td><td>More than 30</td></tr>
 <tr><td>Operating history</td><td>Live since October 2026; daily refreshes</td></tr>
 <tr><td>Ownership and users</td><td>Personally built and maintained; used across the agency</td></tr>
 <tr><td>Manual data entry</td><td>Estimated saving of more than 10 hours a week</td></tr>
-<tr><td>Reporting path</td><td>Python/dbt workflows and PostgreSQL on AWS RDS, with validation tests</td></tr>
+<tr><td>Reporting path</td><td>Python/dbt workflows and PostgreSQL on AWS RDS</td></tr>
 </tbody></table></section>
 <section><h2>Business context and attribution</h2>
-<p>Department-level revenue and cost tracking, combined with cross-training staff to cover two roles, reduced monthly cost of goods sold by approximately $10,000. My broader responsibilities included an 80-person operation and personally recruiting and training 30+ staff.</p>
+<p>Department-level revenue and cost tracking, combined with cross-training staff to cover two roles, reduced monthly cost of goods sold by approximately $10,000.</p>
 <p class="note">The weekly time saving is an operational estimate; a before-and-after time study is not published. The cost reduction combines reporting and staffing changes. It should not be attributed to the pipeline alone.</p></section>
 <section><h2>Why the code is not public</h2>
 <p>The production code and data belong to my employer. These separate projects demonstrate related engineering patterns on public data:</p>
