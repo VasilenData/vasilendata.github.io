@@ -90,7 +90,7 @@
       "name": "NYC Taxi Data Platform",
       "stack": "Dagster, dbt, DuckDB",
       "url": "https://github.com/VasilenData/nyc-taxi-data-platform",
-      "text": "Built a local Dagster/dbt pipeline with a recorded 31.6M-trip benchmark; subsequently added atomic mart publication and failure tests that preserve the previous validated dataset."
+      "text": "Built a Dagster/dbt pipeline with atomic mart publication; added pickup forecasts with 11.3% lower MAE than a weekly baseline across 16,043 held-out zone-days."
     },
     "streaming": {
       "name": "Wikipedia Streaming Lakehouse",
@@ -108,7 +108,7 @@
       "name": "E-Commerce Finance Mart",
       "stack": "SQL, DuckDB, dimensional modeling",
       "url": "https://github.com/VasilenData/ecommerce-finance-mart",
-      "text": "Modeled 1.07M public invoice lines into a star schema; reconciled Excel values against SQL and bundled the workbook, charts and outputs in one checksummed release."
+      "text": "Reconciled SQL and Excel over 1.07M invoice lines; added point-in-time 90-day repeat-purchase modeling with ROC-AUC 0.748-0.762 across two future test windows."
     }
   },
   "variants": {
