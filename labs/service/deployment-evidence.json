@@ -7,7 +7,7 @@
     "code_commit": "d2f6bc2e038af295f27b9b360a6e122510c7a194",
     "public_url": "https://taxi-booking-api-demo.up.railway.app",
     "docs_url": "https://taxi-booking-api-demo.up.railway.app/docs",
-    "source": "Railway deployment state and pinned source commit verified in the authenticated browser"
+    "source": "The Railway connector verified the deployment ID, pinned source commit and SUCCESS status. Browser checks confirmed /ready and /docs. The independent four-endpoint HTTP probe verified the recorded health, readiness, model-identity and booking-prediction contracts."
   },
   "observation": {
     "workflow_run_url": "https://github.com/VasilenData/taxi-eta-service/actions/runs/43060223830",
