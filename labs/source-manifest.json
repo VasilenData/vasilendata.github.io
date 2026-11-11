@@ -1,0 +1,54 @@
+{
+  "mirrored_artifacts": [
+    {
+      "path": "labs/experimentation/report.json",
+      "source_repository": "ab-test-analysis",
+      "source_path": "reports/decision-cookie-cats/report.json",
+      "source_url": "https://github.com/VasilenData/ab-test-analysis/blob/main/reports/decision-cookie-cats/report.json",
+      "sha256": "bbf6f86b44772484747477b17a83f763fb04174e1086969d67bf847deb7fdfcf"
+    },
+    {
+      "path": "labs/churn/report.json",
+      "source_repository": "customer-churn-model",
+      "source_path": "outputs/nested-logistic-20261111/report.json",
+      "source_url": "https://github.com/VasilenData/customer-churn-model/blob/main/outputs/nested-logistic-20261111/report.json",
+      "sha256": "c7f77a09f20fd0e4a36db5a7468d67121147ccd20a599c20ecc7c1a881278dca"
+    },
+    {
+      "path": "labs/churn/heldout_predictions.csv",
+      "source_repository": "customer-churn-model",
+      "source_path": "outputs/nested-logistic-20261111/heldout_predictions.csv",
+      "source_url": "https://github.com/VasilenData/customer-churn-model/blob/main/outputs/nested-logistic-20261111/heldout_predictions.csv",
+      "sha256": "5e9e23f13f2860c1b6e2e9987eb52c8371106009c629069a26ff57518396c731"
+    },
+    {
+      "path": "labs/search/report.json",
+      "source_repository": "rag-retrieval-eval",
+      "source_path": "results/document-lifecycle.json",
+      "source_url": "https://github.com/VasilenData/rag-retrieval-eval/blob/main/results/document-lifecycle.json",
+      "sha256": "01158971ed30e6f4b92e0518ae40ce8db073153f842a92a68460ae67d33e4719"
+    },
+    {
+      "path": "labs/management/report.json",
+      "source_repository": "ecommerce-finance-mart",
+      "source_path": "docs/management/management.json",
+      "source_url": "https://github.com/VasilenData/ecommerce-finance-mart/blob/main/docs/management/management.json",
+      "sha256": "a12c9fd52ab9e054523edf3d6a3e8f22a6f1ff9e30a0908feb358aec0d80707a"
+    },
+    {
+      "path": "labs/management/management.md",
+      "source_repository": "ecommerce-finance-mart",
+      "source_path": "docs/management/management.md",
+      "source_url": "https://github.com/VasilenData/ecommerce-finance-mart/blob/main/docs/management/management.md",
+      "sha256": "8a9f4ad8508629d8916d1f435c87a953b98a886dee7e1a96471b48b473f95683"
+    },
+    {
+      "path": "labs/service/report.json",
+      "source_repository": "taxi-eta-service",
+      "source_path": "reports/booking-2023-h1/report.json",
+      "source_url": "https://github.com/VasilenData/taxi-eta-service/blob/main/reports/booking-2023-h1/report.json",
+      "sha256": "3e883ec6c377530734d0a7fdc05a6a07c26f01a36fc2c69d3d4ceb9928c5a5be"
+    }
+  ],
+  "note": "Exact copied public-project evidence bytes. New HTML viewers are derived presentation, not regenerated model results."
+}
