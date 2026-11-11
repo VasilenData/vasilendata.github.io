@@ -1,0 +1,8 @@
+{
+  "deployment_verified": false,
+  "status": "Local and Docker foundation",
+  "description": "Chronological evaluation, atomic model publication, API validation and drift monitoring. Public deployment has not yet been verified for this evidence hub.",
+  "evidence_url": "https://github.com/VasilenData/taxi-eta-service",
+  "public_url": null,
+  "verified_at": null
+}
