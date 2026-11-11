@@ -1,8 +1,9 @@
 {
-  "deployment_verified": false,
-  "status": "Local and Docker foundation",
-  "description": "Chronological evaluation, atomic model publication, API validation and drift monitoring. Public deployment has not yet been verified for this evidence hub.",
-  "evidence_url": "https://github.com/VasilenData/taxi-eta-service",
-  "public_url": null,
-  "verified_at": null
+  "deployment_verified": true,
+  "status": "Railway trial demo",
+  "description": "Deployed and first verified on 11 November 2026. A four-endpoint public probe passed; this is one observation, not an uptime history. Trial hosting may pause or expire, and cold starts can occur.",
+  "evidence_url": "https://vasilendata.github.io/labs/service/deployment-evidence.json",
+  "public_url": "https://taxi-booking-api-demo.up.railway.app",
+  "docs_url": "https://taxi-booking-api-demo.up.railway.app/docs",
+  "verified_at": "2026-11-11T16:38:04.634093+00:00"
 }

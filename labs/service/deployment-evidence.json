@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "deployment": {
+    "platform": "Railway trial demo",
+    "deployment_id": "00b2bab5-6935-4a24-bd8f-b807d08ab01e",
+    "deployed_date": "2026-11-11",
+    "code_commit": "d2f6bc2e038af295f27b9b360a6e122510c7a194",
+    "public_url": "https://taxi-booking-api-demo.up.railway.app",
+    "docs_url": "https://taxi-booking-api-demo.up.railway.app/docs",
+    "source": "The Railway connector verified the deployment ID, pinned source commit and SUCCESS status. Browser checks confirmed /ready and /docs. The independent four-endpoint HTTP probe verified the recorded health, readiness, model-identity and booking-prediction contracts."
+  },
+  "observation": {
+    "workflow_run_url": "https://github.com/VasilenData/taxi-eta-service/actions/runs/43060223830",
+    "workflow_head_sha": "2fc87cd4c8e3d485c1f078ea9b73bf63de09b05f",
+    "observed_at_utc": "2026-11-11T16:38:04.634093+00:00",
+    "report_path": "labs/service/probe-2026-11-11.json",
+    "report_sha256": "187355034f0942bd97d0b40caac1a9670ed83746f095b9eee9e927e8551d6404",
+    "github_artifact_id": 13872603112,
+    "github_artifact_zip_sha256": "714469bf87e7a51cf8244ec20ba63093bab24bf0fa0c275f3e6e00bb441a42c2"
+  },
+  "scope": "One sequential four-request public HTTP observation; no historical uptime, throughput, latency percentile or SLA.",
+  "limitations": [
+    "Trial hosting may expire or pause; cold starts and future availability can differ.",
+    "No ongoing hosting cost or production reliability is established.",
+    "Chronological model evaluation remains a separate retrospective bounded-sample study."
+  ]
+}

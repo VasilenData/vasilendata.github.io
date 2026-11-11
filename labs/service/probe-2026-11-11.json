@@ -1,0 +1,60 @@
+{
+  "observed_at_utc": "2026-11-11T16:38:04.634093+00:00",
+  "finished_at_utc": "2026-11-11T16:38:06.234247+00:00",
+  "base_url": "https://taxi-booking-api-demo.up.railway.app",
+  "expected_model_sha256": "f7e0d7de3f1b31eedfbe08744db16a0e2e241d9c1a336ec5a9037b1585d262a8",
+  "timeout_seconds_per_request": 5.0,
+  "latency_budget_ms_per_request": 5000.0,
+  "checks": [
+    {
+      "path": "/health",
+      "method": "GET",
+      "status": 200,
+      "elapsed_ms": 687.444,
+      "within_latency_budget": true,
+      "transport_ok": true,
+      "error": null
+    },
+    {
+      "path": "/ready",
+      "method": "GET",
+      "status": 200,
+      "elapsed_ms": 313.127,
+      "within_latency_budget": true,
+      "transport_ok": true,
+      "error": null
+    },
+    {
+      "path": "/model",
+      "method": "GET",
+      "status": 200,
+      "elapsed_ms": 295.663,
+      "within_latency_budget": true,
+      "transport_ok": true,
+      "error": null
+    },
+    {
+      "path": "/predict",
+      "method": "POST",
+      "status": 200,
+      "elapsed_ms": 303.345,
+      "within_latency_budget": true,
+      "transport_ok": true,
+      "error": null
+    }
+  ],
+  "contracts": {
+    "health": true,
+    "ready": true,
+    "model_identity_and_features": true,
+    "booking_prediction_without_distance": true
+  },
+  "prediction": {
+    "predicted_minutes": 8.9,
+    "low_minutes": 6.2,
+    "high_minutes": 14.7,
+    "model_version": "taxi-booking-duration-f7e0d7de3f1b"
+  },
+  "ok": true,
+  "scope": "one sequential four-request observation; not uptime, throughput or a latency percentile"
+}

@@ -5,6 +5,8 @@ import html
 import json
 from pathlib import Path
 
+from verify_labs import check_service_evidence
+
 ROOT = Path(__file__).resolve().parents[1]
 LABS = ROOT / "labs"
 GITHUB = "https://github.com/VasilenData/"
@@ -50,6 +52,7 @@ def bullets(items):
 
 
 def build():
+    check_service_evidence(ROOT)
     experiment, churn, search, management = [read(f'{name}/report.json') for name in ('experimentation', 'churn', 'search', 'management')]
     forecast, future, gate, service = read('forecast/report.json'), read('customer-value/report.json'), read('evaluation/latest.json'), read('service-status.json')
     booking = read('service/report.json')
@@ -113,7 +116,13 @@ def build():
     body += '<p>The central interval targets 80% coverage and calibrates on May. Coverage is assessed on June; it is not guaranteed under time shift. The baseline uses training-only route medians with hour/global fallbacks.</p>'
     body += f'<h2>Operating status</h2><p><strong>{esc(service["status"])}.</strong> {esc(service["description"])}</p>'
     if service['deployment_verified']:
-        body += links([('Verified public service', service['public_url']), ('Operational evidence', service['evidence_url'])])
+        observed = read('service/deployment-evidence.json')['observation']
+        probe = read(observed['report_path'].removeprefix('labs/'))
+        body += f'<p>Observed at {esc(probe["observed_at_utc"])}. Four sequential requests checked health, readiness, model identity and a booking prediction without distance. All returned HTTP 200 and passed the {probe["latency_budget_ms_per_request"] / 1000:g}-second per-request budget.</p>'
+        body += '<p class="muted">One observation is not an uptime history, throughput test, latency percentile or SLA. The trial may expire or pause; cold starts and future availability can differ. No ongoing hosting-cost claim is made.</p>'
+        body += links([('Try the API / docs', service['docs_url']), ('Readiness endpoint', service['public_url'] + '/ready'),
+                       ('Dated deployment evidence', 'deployment-evidence.json'), ('Exact HTTP observation', Path(observed['report_path']).name),
+                       ('Probe workflow', observed['workflow_run_url'])])
     body += '<h2>Limits</h2>' + bullets(booking['limitations'])
     body += links([('Protocol, metrics and source hashes', 'report.json'),
                   ('Every held-out prediction (gzip CSV)', GITHUB + 'taxi-eta-service/blob/main/reports/booking-2023-h1/predictions_test.csv.gz'),
@@ -130,7 +139,7 @@ def build():
         ('Customer retention & future value', 'Temporal retail study + nested churn rerun', f"{min(aucs):.3f}–{max(aucs):.3f} future-window AUC · {churn['test_roc_auc']:.4f} churn AUC", 'Point-in-time retail features and baseline comparisons; a separate churn workflow cross-fits selection and calibration. No retention uplift or lifetime-profit claim.', [('Retail study', 'customer-value/'), ('Churn evaluation', 'churn/'), ('Source', GITHUB + 'ecommerce-finance-mart')]),
         ('Demand & capacity planning', 'Historical next-day replay', f"{improvement:.1%} lower MAE · {chosen['rows']:,} held-out zone-days", 'Six complete TLC months, seasonal baseline, temporal model selection and interval checks. Capacity is hypothetical; monthly public files cannot operate live dispatch.', [('Forecast report', 'forecast/'), ('Source', GITHUB + 'nyc-taxi-data-platform')]),
         ('Financial decision support', 'Reconciled historical retailer data', f"£{current['net_product_revenue']/1_000_000:.2f}m net product revenue · November 2011", 'A management brief decomposes movement into order, basket and return contributions, then lists what is still needed before acting. Revenue is not profit.', [('Management brief', 'management/'), ('Source', GITHUB + 'ecommerce-finance-mart')]),
-        ('Prediction service operations', service['status'], f"{learned['mae_min']:.3f}-minute MAE · {booking_improvement:.1%} below the baseline", 'Booking-time features, four chronological phases and retained paired predictions on 200,000 held-out trips. ' + service['description'], [('Booking evaluation', 'service/'), ('Source', GITHUB + 'taxi-eta-service')] + ([('Public service', service['public_url'])] if service['deployment_verified'] else [])),
+        ('Prediction service operations', service['status'], f"{learned['mae_min']:.3f}-minute MAE · {booking_improvement:.1%} below the baseline", 'Booking-time features, four chronological phases and retained paired predictions on 200,000 held-out trips. ' + service['description'], [('Booking evaluation', 'service/'), ('Source', GITHUB + 'taxi-eta-service')] + ([('API / docs', service['docs_url'])] if service['deployment_verified'] else [])),
         ('Domain search & RAG', 'Local lifecycle + historical retrieval benchmark', f"{search['initial']['documents']} real documents · four formats · transactional updates", 'Stable identities, bounded ingestion, incremental indexing and deletion with recovery evidence. Query authorship, latency scope and unpriced local costs are explicit.', [('Search evidence', 'search/'), ('Source', GITHUB + 'rag-retrieval-eval')]),
         ('AI regression evaluation', 'Measured retrieval release gate', f"{gate['candidate']['tasks']} paired tasks · deliberate regression rejected", 'Quality, latency, API-fee and error budgets preserve the last passing publication. Full-generation evidence now publishes atomically; no new LLM quality result is claimed.', [('Release gate', 'evaluation/'), ('Source', GITHUB + 'research-assistant-eval')]),
     ]
