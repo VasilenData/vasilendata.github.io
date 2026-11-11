@@ -9,6 +9,7 @@ jobs:
         with:
           python-version: "3.11"
       - run: python tools/verify_labs.py
+      - run: python -m unittest discover -s tests -p 'test_service_evidence.py'
       - run: python tools/build_labs.py
       - name: Recorded evidence must reproduce the checked-in viewers
         run: git diff --exit-code -- labs/index.html labs/experimentation/index.html labs/churn/index.html labs/search/index.html labs/management/index.html labs/service/index.html
