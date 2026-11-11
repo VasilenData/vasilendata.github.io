@@ -44,6 +44,15 @@
   let previousFocus;
   const destinations = [
     ['Projects', 'section', '#work'],
+    ['Evidence hub: seven data and ML capabilities', 'evidence', './labs/'],
+    ['Experimentation decision report', 'evidence', './labs/experimentation/'],
+    ['Nested churn evaluation', 'evidence', './labs/churn/'],
+    ['Document search lifecycle', 'evidence', './labs/search/'],
+    ['Historical management decision brief', 'evidence', './labs/management/'],
+    ['Demand forecasting and capacity scenario', 'evidence', './labs/forecast/'],
+    ['Customer future-value study', 'evidence', './labs/customer-value/'],
+    ['Booking-time prediction service evaluation', 'evidence', './labs/service/'],
+    ['AI regression evaluation gate', 'evidence', './labs/evaluation/'],
     ['Professional experience', 'section', '#experience'],
     ['About', 'section', '#about'],
     ['Toolkit', 'section', '#skills'],
