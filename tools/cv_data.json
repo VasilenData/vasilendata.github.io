@@ -22,7 +22,7 @@
       "company": "Gosian Media LLC",
       "dates": "Jun 2025 - Present",
       "bullets": [
-        "Retained hands-on engineering after promotion; built and maintain daily agency-wide cash-flow reporting, live since October 2026.",
+        "Built and maintain agency-wide cash-flow reporting, live since October 2026 with daily refreshes; continued hands-on engineering after promotion.",
         "Migrated 30+ spreadsheets to PostgreSQL on AWS RDS with Dockerized Python/dbt workflows; saved an estimated 10+ hours of manual entry weekly.",
         "Reduced monthly cost of goods sold by about $10,000 through reporting and staff cross-training."
       ],
@@ -115,24 +115,34 @@
     "data-engineer": {
       "filename": "vasilen-kanchev-cv.pdf",
       "headline": "Data Engineer",
-      "summary": "Data engineer building Python, SQL and dbt pipelines on PostgreSQL/AWS RDS. Owns daily agency-wide cash-flow reporting, combining technical delivery with operational and stakeholder experience.",
+      "summary": "Data engineer building Python, SQL and dbt pipelines on PostgreSQL/AWS RDS. Owns daily cash-flow reporting; seeking a dedicated hands-on Data Engineer role.",
       "project_skills": "Dagster, Kafka, Spark Structured Streaming, DuckDB, GitHub Actions, Airflow (local)",
       "projects": [
         "taxi",
         "hn",
         "finance"
-      ]
+      ],
+      "project_texts": {
+        "taxi": "Built repeatable monthly loads with schema checks, quarantine and atomic mart publication. Failure tests preserve the last validated dataset in a local DuckDB pipeline.",
+        "hn": "Built API ingestion with bounded retries, completeness checks and 27 dbt tests that gate publication; added a separate freshness monitor for the live dashboard.",
+        "finance": "Built a versioned release for 1.07M public invoice lines, generating workbook, explorer and charts from one source snapshot; verified 124 workbook/SQL comparisons."
+      }
     },
     "analytics-engineer": {
       "filename": "vasilen-kanchev-cv-analytics.pdf",
       "headline": "Analytics Engineer",
-      "summary": "SQL/dbt-focused data professional with daily cash-flow ownership and previous KPI reporting for 15+ stakeholders. Combines Python, PostgreSQL and AWS RDS experience with business analysis.",
+      "summary": "SQL/dbt-focused data professional with daily cash-flow ownership and KPI reporting for 15+ stakeholders. Seeking a dedicated hands-on Analytics Engineer role.",
       "project_skills": "Dimensional modeling, finance reconciliation, DuckDB, data contracts, GitHub Actions, Databricks SQL port",
       "projects": [
         "finance",
         "hn",
         "taxi"
-      ]
+      ],
+      "project_texts": {
+        "finance": "Defined sales, returns and cohort metrics over 1.07M public invoice lines; built a star schema with 14 blocking checks and verified SQL/Excel reconciliation.",
+        "hn": "Modeled one row per story from timestamped API snapshots into four dashboard marts; enforced dbt contracts and 27 tests for keys, ranks, completeness and values.",
+        "taxi": "Modeled public trip data into daily borough and hourly demand marts; reconciled raw, valid and quarantined rows by month before publishing validated metrics."
+      }
     }
   }
 }

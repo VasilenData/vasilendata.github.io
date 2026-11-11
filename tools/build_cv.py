@@ -57,6 +57,14 @@ class Section(Flowable):
         self.canv.line(0, 6, self.width, 6)
 
 
+def project_text(data, variant, project_key):
+    """Use optional role-specific copy, falling back to shared project text."""
+    text = variant.get('project_texts', {}).get(project_key, data['projects'][project_key]['text'])
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError(f'{project_key}: project text must be a non-empty string')
+    return text
+
+
 def build(source, output_dir, font_dir=None):
     data = json.loads(source.read_text(encoding='utf-8'))
     regular, bold, italic = register_fonts(font_dir)
@@ -103,6 +111,15 @@ def build(source, output_dir, font_dir=None):
     output_dir.mkdir(parents=True, exist_ok=True)
     results = []
     for key, variant in data['variants'].items():
+        selected = variant['projects']
+        if len(selected) != 3 or len(set(selected)) != 3:
+            raise ValueError('Each CV must feature three distinct projects')
+        if not isinstance(variant.get('project_texts', {}), dict):
+            raise ValueError('project_texts must map selected project keys to copy')
+        if set(variant.get('project_texts', {})) - set(selected):
+            raise ValueError('project_texts contains an unselected project')
+        selected_copy = {project_key: project_text(data, variant, project_key)
+                         for project_key in selected}
         story = [p(data['name'], 'name'), p(variant['headline'], 'headline'),
                  p(data['contact'], 'contact')]
         contacts = [(data['email'], 'mailto:' + data['email']), *data['links']]
@@ -132,7 +149,7 @@ def build(source, output_dir, font_dir=None):
             title = f'<a href="{escape(project["url"])}" color="#20272C">{escape(project["name"])}</a>'
             block = [Spacer(1, 6)] if idx else []
             block.extend([pair(title, project['stack'], 'project', 'stack', right_width=238),
-                          p(project['text'])])
+                          p(selected_copy[project_key])])
             story.append(KeepTogether(block))
 
         story.append(Section('Technical skills', bold))
@@ -155,6 +172,10 @@ def build(source, output_dir, font_dir=None):
         if len(reader.pages) != 1:
             raise ValueError(f'{output.name}: {len(reader.pages)} pages; edit copy/spacing, not body size')
         text = reader.pages[0].extract_text()
+        normalized_text = ' '.join(text.split())
+        for project_key, copy in selected_copy.items():
+            if ' '.join(copy.split()) not in normalized_text:
+                raise ValueError(f'Missing role-specific project text: {project_key}')
         for item in (data['name'], '30+', '10+', '15+', '40+', 'Expected 2027'):
             if item not in text:
                 raise ValueError(f'Missing extractable fact: {item}')
