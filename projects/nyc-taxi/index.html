@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111315">
+<meta name="description" content="Inspect the NYC Taxi pipeline: historical row reconciliation, tested rollback and atomic publication of validated consumer tables.">
+<link rel="canonical" href="https://vasilendata.github.io/projects/nyc-taxi/">
+<title>NYC Taxi: validated pipeline results | Vasilen Kanchev</title>
+<link rel="stylesheet" href="../../labs/lab.css">
+<style>
+.skip{position:absolute;left:16px;top:-80px;background:var(--surface);padding:10px 16px;z-index:2}.skip:focus{top:12px}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;padding:0;list-style:none;margin:30px 0}.flow li{margin:0;padding:16px;border-top:2px solid var(--mint);background:var(--surface);font-size:.9rem}.flow strong{display:block;color:var(--mint)}
+.equation{padding:16px 20px;border:1px solid var(--line);border-radius:8px;font-size:clamp(.85rem,2vw,1.05rem)}
+.proof-list{padding-left:22px;max-width:900px}.proof-list li{margin:18px 0}.stats .stat{font-size:clamp(1.5rem,3vw,2rem)}
+@media(max-width:800px){.flow{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:420px){.flow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<main id="main">
+<nav aria-label="Main"><a href="../../#work">Selected projects</a><a href="../../labs/">More evidence</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform#evidence-to-inspect">Inspect the engineering</a></nav>
+<header>
+<p class="eyebrow">NYC Taxi / Data engineering</p>
+<h1>Publish only validated data.</h1>
+<p class="lede">Bad monthly files and failed transformations must not replace valid reports. This pipeline keeps rejected records auditable and separates candidate work from the tables consumers read.</p>
+<p class="muted">Python · SQL · Dagster · dbt · DuckDB · Docker</p>
+</header>
+<ol class="flow" aria-label="Pipeline stages">
+<li><strong>01 / Ingest</strong>Monthly files and source fingerprints</li>
+<li><strong>02 / Classify</strong>Valid trips or a rejection reason</li>
+<li><strong>03 / Validate</strong>Candidate tables and reconciliation</li>
+<li><strong>04 / Publish</strong>One transaction, one consumer version</li>
+</ol>
+<section aria-labelledby="reconciliation">
+<h2 id="reconciliation">Recorded row reconciliation</h2>
+<p>Full January–October 2023 TLC files, recorded on <strong>8 November 2026</strong>. This historical run predates the current staged publisher.</p>
+<div class="stats">
+<div class="card"><span class="stat">31,593,944</span><p>Input records</p></div>
+<div class="card"><span class="stat">30,694,510</span><p>Valid fact records</p></div>
+<div class="card"><span class="stat">899,434</span><p>Quarantined with a reason</p></div>
+</div>
+<p class="equation"><code>31,593,944 = 30,694,510 + 899,434</code></p>
+<p>Counts reconcile across input, raw, valid, quarantine and fact layers. Rejected records remain inspectable instead of silently disappearing.</p>
+<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/full-2026-11-08.json">Measurement and input hashes</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/full-2026-11-08.log">Recorded run log</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/BENCHMARKS.md">Measurement method</a></div>
+</section>
+<section aria-labelledby="recovery">
+<h2 id="recovery">What the failure tests prove</h2>
+<p>The current publisher validates a candidate, then replaces eight consumer tables and their version metadata in one DuckDB transaction.</p>
+<ul class="proof-list">
+<li><strong>Invalid candidate:</strong> mismatched counts or mart totals are refused; the previous consumer relations remain unchanged. <a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py#L70">Validation test</a></li>
+<li><strong>Interrupted copy:</strong> injected exceptions during copying or before commit preserve every previous consumer relation. <a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py#L37">Rollback test</a></li>
+<li><strong>Abrupt process exit:</strong> reopening the database finds the previous release intact; a subsequent valid publication succeeds. <a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py#L88">Crash-and-recovery test</a></li>
+</ul>
+<p class="scope">These are controlled tests with generated candidates and sample integration data. The system runs locally, in Docker and in CI. It is a single-writer warehouse; full-data publication overhead has not been remeasured, and no live cloud mart is claimed.</p>
+<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/taxi_platform/publication.py">Publication implementation</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_pipeline.py">Pipeline integration checks</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml">Current CI runs</a></div>
+</section>
+<section aria-labelledby="further">
+<h2 id="further">Separate modeling extension</h2>
+<p><a href="../../labs/forecast/">Explore the historical pickup forecast</a>. Its prediction results and hypothetical capacity scenario are separate from the pipeline evidence above.</p>
+</section>
+<footer>Vasilen Kanchev · Public-data portfolio project, built and reviewed with AI assistance.</footer>
+</main>
+</body>
+</html>
