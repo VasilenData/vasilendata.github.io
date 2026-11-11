@@ -2,36 +2,7 @@
   'use strict';
 
   document.getElementById('year').textContent = new Date().getFullYear();
-  const chips = [...document.querySelectorAll('.chip')];
   const projects = [...document.querySelectorAll('.proj')];
-  const count = document.getElementById('fcount');
-  const validFilters = new Set(chips.map(chip => chip.dataset.f));
-
-  function filterProjects(filter, updateURL = false) {
-    if (!validFilters.has(filter)) filter = 'selected';
-    let visible = 0;
-    projects.forEach(project => {
-      const show = filter === 'all'
-        || (filter === 'selected' && project.hasAttribute('data-selected'))
-        || project.dataset.cat.split(' ').includes(filter);
-      project.hidden = !show;
-      if (show) visible++;
-    });
-    chips.forEach(chip => chip.setAttribute('aria-pressed', String(chip.dataset.f === filter)));
-    count.textContent = `${visible} of ${projects.length} projects`;
-    if (updateURL) {
-      const url = new URL(location.href);
-      if (filter === 'selected') url.searchParams.delete('projects');
-      else url.searchParams.set('projects', filter);
-      url.hash = 'work';
-      history.replaceState(null, '', url);
-    }
-  }
-
-  // Without JavaScript every project remains readable; only working controls appear.
-  chips.forEach(chip => chip.addEventListener('click', () => filterProjects(chip.dataset.f, true)));
-  filterProjects(new URL(location.href).searchParams.get('projects') || 'selected');
-  document.querySelector('.filters').hidden = false;
 
   const dialog = document.getElementById('pal');
   if (typeof dialog.showModal !== 'function') return;
@@ -44,15 +15,10 @@
   let previousFocus;
   const destinations = [
     ['Projects', 'section', '#work'],
-    ['Evidence hub: seven data and ML capabilities', 'evidence', './labs/'],
-    ['Experimentation decision report', 'evidence', './labs/experimentation/'],
-    ['Nested churn evaluation', 'evidence', './labs/churn/'],
-    ['Document search lifecycle', 'evidence', './labs/search/'],
+    ['More project evidence', 'evidence', './labs/'],
     ['Historical management decision brief', 'evidence', './labs/management/'],
     ['Demand forecasting and capacity scenario', 'evidence', './labs/forecast/'],
     ['Customer future-value study', 'evidence', './labs/customer-value/'],
-    ['Booking-time prediction service evaluation', 'evidence', './labs/service/'],
-    ['AI regression evaluation gate', 'evidence', './labs/evaluation/'],
     ['Professional experience', 'section', '#experience'],
     ['About', 'section', '#about'],
     ['Toolkit', 'section', '#skills'],
