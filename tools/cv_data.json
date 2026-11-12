@@ -90,7 +90,7 @@
       "name": "NYC Taxi Data Platform",
       "stack": "Dagster, dbt, DuckDB",
       "url": "https://github.com/VasilenData/nyc-taxi-data-platform",
-      "text": "Built a Dagster/dbt pipeline with atomic mart publication; added pickup forecasts with 11.3% lower MAE than a weekly baseline across 16,043 held-out zone-days."
+      "text": "Reconciled 31.6M historical trips through a measured Dagster/dbt pipeline and atomic publication; tested source corrections, model changes and crash recovery."
     },
     "streaming": {
       "name": "Wikipedia Streaming Lakehouse",
@@ -102,13 +102,13 @@
       "name": "HN Pulse",
       "stack": "Python, dbt, DuckDB, GitHub Actions",
       "url": "https://vasilendata.github.io/hn-pulse/",
-      "text": "Built scheduled API ingestion with completeness gates, dbt contracts/tests, bounded retries and a separate hourly freshness check for the live dashboard."
+      "text": "Built scheduled API ingestion with dbt contracts and completeness gates; deployed independent monitoring and verified stale-data detection and alert/recovery emails."
     },
     "finance": {
       "name": "E-Commerce Finance Mart",
       "stack": "SQL, DuckDB, dimensional modeling",
       "url": "https://github.com/VasilenData/ecommerce-finance-mart",
-      "text": "Reconciled SQL and Excel over 1.07M invoice lines; added point-in-time 90-day repeat-purchase modeling with ROC-AUC 0.748-0.762 across two future test windows."
+      "text": "Reconciled SQL and Excel over 1.07M public invoice lines; added a separate synthetic PostgreSQL/Debezium lab for order corrections, refunds, deletes and replay."
     }
   },
   "variants": {
@@ -123,9 +123,9 @@
         "finance"
       ],
       "project_texts": {
-        "taxi": "Built repeatable monthly loads with schema checks, quarantine and atomic mart publication. Failure tests preserve the last validated dataset in a local DuckDB pipeline.",
-        "hn": "Built API ingestion with bounded retries, completeness checks and 27 dbt tests that gate publication; added a separate freshness monitor for the live dashboard.",
-        "finance": "Built a versioned release for 1.07M public invoice lines, generating workbook, explorer and charts from one source snapshot; verified 124 workbook/SQL comparisons."
+        "taxi": "Reconciled and atomically published 31.6M historical trips across eight consumer tables; tested selective source corrections, model changes and crash recovery.",
+        "hn": "Built API ingestion with 27 dbt tests and completeness gates; deployed an independent monitor and verified stale-data detection plus alert/recovery emails.",
+        "finance": "Built a reconciled SQL/Excel release for 1.07M invoice lines; verified six PostgreSQL/Debezium checks for corrections, deletes, crash recovery and replay in a synthetic lab."
       }
     },
     "analytics-engineer": {
@@ -139,9 +139,9 @@
         "taxi"
       ],
       "project_texts": {
-        "finance": "Defined sales, returns and cohort metrics over 1.07M public invoice lines; built a star schema with 14 blocking checks and verified SQL/Excel reconciliation.",
+        "finance": "Defined sales, returns and cohort metrics over 1.07M public invoice lines; verified 14 release checks and 124 workbook/SQL comparisons with zero formula errors.",
         "hn": "Modeled one row per story from timestamped API snapshots into four dashboard marts; enforced dbt contracts and 27 tests for keys, ranks, completeness and values.",
-        "taxi": "Modeled public trip data into daily borough and hourly demand marts; reconciled raw, valid and quarantined rows by month before publishing validated metrics."
+        "taxi": "Reconciled 31.6M historical trips into valid and quarantined records; tested a changed classification rule across both sample months without reloading sources."
       }
     }
   }
