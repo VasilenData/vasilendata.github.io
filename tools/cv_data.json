@@ -116,7 +116,7 @@
       "filename": "vasilen-kanchev-cv.pdf",
       "headline": "Data Engineer",
       "summary": "Data engineer building Python, SQL and dbt pipelines on PostgreSQL/AWS RDS. Owns daily cash-flow reporting; seeking a dedicated hands-on Data Engineer role.",
-      "project_skills": "Dagster, Kafka, Spark Structured Streaming, DuckDB, GitHub Actions, Airflow (local)",
+      "project_skills": "Dagster, DuckDB, Git, pytest, GitHub Actions (CI/CD), Airflow (local)",
       "projects": [
         "taxi",
         "hn",
@@ -132,7 +132,7 @@
       "filename": "vasilen-kanchev-cv-analytics.pdf",
       "headline": "Analytics Engineer",
       "summary": "SQL/dbt-focused data professional with daily cash-flow ownership and KPI reporting for 15+ stakeholders. Seeking a dedicated hands-on Analytics Engineer role.",
-      "project_skills": "Dimensional modeling, finance reconciliation, DuckDB, data contracts, GitHub Actions, Databricks SQL port",
+      "project_skills": "Dimensional modeling, reconciliation, DuckDB, data contracts, Git, pytest, GitHub Actions",
       "projects": [
         "finance",
         "hn",
