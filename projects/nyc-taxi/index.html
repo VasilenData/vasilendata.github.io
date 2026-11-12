@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111315">
-<meta name="description" content="Inspect the NYC Taxi pipeline: historical row reconciliation, tested rollback and atomic publication of validated consumer tables.">
+<meta name="description" content="Inspect a measured 31.6-million-row NYC Taxi pipeline, atomic publication, reviewed source corrections and tested recovery.">
 <link rel="canonical" href="https://vasilendata.github.io/projects/nyc-taxi/">
 <title>NYC Taxi: validated pipeline results | Vasilen Kanchev</title>
 <link rel="stylesheet" href="../../labs/lab.css">
@@ -34,7 +34,7 @@
 </ol>
 <section aria-labelledby="reconciliation">
 <h2 id="reconciliation">Recorded row reconciliation</h2>
-<p>Full January–October 2023 TLC files, recorded on <strong>8 November 2026</strong>. This historical run predates the current staged publisher.</p>
+<p>Full January–October 2023 TLC files, measured on <strong>12 November 2026</strong> through the current staged publisher. Every monthly source file has a recorded hash.</p>
 <div class="stats">
 <div class="card"><span class="stat">31,593,944</span><p>Input records</p></div>
 <div class="card"><span class="stat">30,694,510</span><p>Valid fact records</p></div>
@@ -42,18 +42,45 @@
 </div>
 <p class="equation"><code>31,593,944 = 30,694,510 + 899,434</code></p>
 <p>Counts reconcile across input, raw, valid, quarantine and fact layers. Rejected records remain inspectable instead of silently disappearing.</p>
-<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/full-2026-11-08.json">Measurement and input hashes</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/full-2026-11-08.log">Recorded run log</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/BENCHMARKS.md">Measurement method</a></div>
+<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/full-2026-11-12-final.json">Measurement and input hashes</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/full-2026-11-12-final.log">Recorded run log</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/BENCHMARKS.md">Measurement method</a></div>
+</section>
+<section aria-labelledby="resources">
+<h2 id="resources">What validated publication costs</h2>
+<div class="stats">
+<div class="card"><span class="stat">140.638 s</span><p>Full pipeline wall time</p></div>
+<div class="card"><span class="stat">33.074 s</span><p>Validation-to-commit publication</p></div>
+<div class="card"><span class="stat">4.58 GiB</span><p>Sampled aggregate process RSS</p></div>
+</div>
+<p>The checkpointed warehouse occupied <strong>8.55 GiB</strong>, including raw, candidate and consumer data. Publication copied eight tables before committing their version together. That extra copy buys a clear failure boundary; it has a measurable runtime and storage cost.</p>
+<p class="scope">One local Windows run with warm input cache and a new warehouse. Total time includes loading, dbt, checks and publication; it excludes downloads and preparation checksums. RSS sums the pipeline and child processes and can double-count shared pages or miss short peaks. A 4 GB DuckDB budget applied separately to ingestion and dbt, not total process RSS. This is not a speedup comparison or a cloud cost benchmark.</p>
 </section>
 <section aria-labelledby="recovery">
 <h2 id="recovery">What the failure tests prove</h2>
 <p>The current publisher validates a candidate, then replaces eight consumer tables and their version metadata in one DuckDB transaction.</p>
 <ul class="proof-list">
-<li><strong>Invalid candidate:</strong> mismatched counts or mart totals are refused; the previous consumer relations remain unchanged. <a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py#L70">Validation test</a></li>
-<li><strong>Interrupted copy:</strong> injected exceptions during copying or before commit preserve every previous consumer relation. <a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py#L37">Rollback test</a></li>
-<li><strong>Abrupt process exit:</strong> reopening the database finds the previous release intact; a subsequent valid publication succeeds. <a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py#L88">Crash-and-recovery test</a></li>
+<li><strong>Invalid candidate:</strong> mismatched counts or mart totals are refused; the previous consumer relations remain unchanged.</li>
+<li><strong>Interrupted copy:</strong> injected exceptions during copying or before commit preserve every previous consumer relation.</li>
+<li><strong>Abrupt process exit:</strong> reopening the database finds the previous release intact; a subsequent valid publication succeeds.</li>
 </ul>
-<p class="scope">These are controlled tests with generated candidates and sample integration data. The system runs locally, in Docker and in CI. It is a single-writer warehouse; full-data publication overhead has not been remeasured, and no live cloud mart is claimed.</p>
-<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/taxi_platform/publication.py">Publication implementation</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_pipeline.py">Pipeline integration checks</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml">Current CI runs</a></div>
+<p class="scope">Failure tests use generated candidates and sample integration data, separately from the full-data measurement. This is a single-writer warehouse running locally, in Docker and in CI; no live cloud mart is claimed.</p>
+<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/tests/test_publication.py">Failure and recovery tests</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/taxi_platform/publication.py">Publication implementation</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/actions/workflows/ci.yml">Current CI runs</a></div>
+</section>
+<section aria-labelledby="changes">
+<h2 id="changes">Change a source. Keep the consumer contract.</h2>
+<p>A six-scenario exercise on 30,000 public sample rows tests the maintenance path: review affected months and outputs, bind the plan to source bytes and the current publication, then apply it.</p>
+<ul class="proof-list">
+<li><strong>Correct January:</strong> a changed amount and an extra nullable source column reload January alone. February's classification checksum remains unchanged; downstream marts are rebuilt together.</li>
+<li><strong>Reject a breaking schema or bad candidate:</strong> a missing required column is refused before apply. Injected negative fares fail the quality gate; all eight consumer tables and their version remain unchanged. Restoring valid input publishes successfully.</li>
+<li><strong>Change the business rule:</strong> lowering the distance threshold reclassifies both loaded months without reloading sources. The published facts satisfy the new rule.</li>
+</ul>
+<p class="scope">Corrections and faults are generated exercises, not real TLC incidents. Source reloads are selective; downstream tables rebuild in full. The plan is a single-writer safeguard, not distributed concurrency control.</p>
+<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/CHANGE_MANAGEMENT.md">Review and recovery procedure</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/change-exercise-2026-11-12-final/report.json">Executed six-scenario report</a></div>
+</section>
+<section aria-labelledby="lakehouse">
+<h2 id="lakehouse">A bounded lakehouse comparison</h2>
+<p>A separate five-row PyIceberg/Parquet exercise checks append, corrected overwrite, schema evolution, uncommitted-write isolation, time travel and rollback. It measures retained data, metadata and abandoned-file bytes alongside a current-state DuckDB fixture.</p>
+<p class="scope">Iceberg commits one table at a time here; the DuckDB publisher commits eight consumer tables together. This is a local SQLite-catalog experiment, not a full-data lakehouse benchmark.</p>
+<div class="filelinks"><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/ICEBERG.md">Semantics and trade-offs</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/measurements/iceberg-2026-11-12.json">Measured fixture report</a></div>
 </section>
 <section aria-labelledby="further">
 <h2 id="further">Separate modeling extension</h2>
