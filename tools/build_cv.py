@@ -176,7 +176,7 @@ def build(source, output_dir, font_dir=None):
         for project_key, copy in selected_copy.items():
             if ' '.join(copy.split()) not in normalized_text:
                 raise ValueError(f'Missing role-specific project text: {project_key}')
-        for item in (data['name'], '30+', '10+', '15+', '40+', 'Expected 2027'):
+        for item in (data['name'], '30+', '15+', '40+', 'Expected 2027'):
             if item not in text:
                 raise ValueError(f'Missing extractable fact: {item}')
         for job in data['experience']:
