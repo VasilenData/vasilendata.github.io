@@ -109,6 +109,12 @@
       "stack": "SQL, DuckDB, dimensional modeling",
       "url": "https://github.com/VasilenData/ecommerce-finance-mart",
       "text": "Reconciled SQL and Excel over 1.07M public invoice lines; added a separate synthetic PostgreSQL/Debezium lab for order corrections, refunds, deletes and replay."
+    },
+    "meterwork": {
+      "name": "Meterwork",
+      "stack": "Python, PostgreSQL, FastAPI",
+      "url": "https://github.com/VasilenData/usage-metering-platform",
+      "text": "Built reproducible usage statements with historical pricing and correction tracing; 72 revisions across 24 synthetic accounts reconciled to independent SQL with zero discrepancy."
     }
   },
   "variants": {
@@ -118,14 +124,14 @@
       "summary": "Data engineer building Python, SQL and dbt pipelines on PostgreSQL/AWS RDS. Owns daily cash-flow reporting; seeking a dedicated hands-on Data Engineer role.",
       "project_skills": "Dagster, DuckDB, Git, pytest, GitHub Actions (CI/CD), Airflow (local)",
       "projects": [
+        "meterwork",
         "taxi",
-        "hn",
         "finance"
       ],
       "project_texts": {
-        "taxi": "Reconciled and atomically published 31.6M historical trips across eight consumer tables; tested selective source corrections, model changes and crash recovery.",
-        "hn": "Built API ingestion with 27 dbt tests and completeness gates; deployed an independent monitor and verified stale-data detection plus alert/recovery emails.",
-        "finance": "Built a reconciled SQL/Excel release for 1.07M invoice lines; verified six PostgreSQL/Debezium checks for corrections, deletes, crash recovery and replay in a synthetic lab."
+        "meterwork": "Built tenant-isolated usage processing with historical pricing; 11,760 events and 960 retries reconciled across 72 revisions in a synthetic PostgreSQL exercise.",
+        "taxi": "Reconciled and atomically published 31.6M historical trips across eight tables; tested crash recovery and rejection of stale plans after data or schema changes.",
+        "finance": "Built a reconciled SQL/Excel release for 1.07M public invoice lines; tested corrections, deletes and replay in a separate synthetic PostgreSQL/Debezium lab."
       }
     },
     "analytics-engineer": {
@@ -135,13 +141,13 @@
       "project_skills": "Dimensional modeling, reconciliation, DuckDB, data contracts, Git, pytest, GitHub Actions",
       "projects": [
         "finance",
-        "hn",
+        "meterwork",
         "taxi"
       ],
       "project_texts": {
-        "finance": "Defined sales, returns and cohort metrics over 1.07M public invoice lines; verified 14 release checks and 124 workbook/SQL comparisons with zero formula errors.",
-        "hn": "Modeled one row per story from timestamped API snapshots into four dashboard marts; enforced dbt contracts and 27 tests for keys, ranks, completeness and values.",
-        "taxi": "Reconciled 31.6M historical trips into valid and quarantined records; tested a changed classification rule across both sample months without reloading sources."
+        "finance": "Reconciled 1.07M public invoice lines with 124 workbook/SQL comparisons; added synthetic subscription MRR, cash and invoice bridges with source-to-report restatement traces.",
+        "meterwork": "Defined historical pricing and traced late usage, corrections and repricing; all 72 statement revisions matched independent SQL and fixture arithmetic in a synthetic study.",
+        "taxi": "Reconciled 31.6M historical trips into valid and quarantined records; tested classification-rule changes and detected data/schema drift before applying reviewed plans."
       }
     }
   }

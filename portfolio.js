@@ -16,6 +16,7 @@
   const destinations = [
     ['Projects', 'section', '#work'],
     ['More project evidence', 'evidence', './labs/'],
+    ['HN Pulse live dashboard', 'additional project', 'https://vasilendata.github.io/hn-pulse/'],
     ['Historical management decision brief', 'evidence', './labs/management/'],
     ['Demand forecasting and capacity scenario', 'evidence', './labs/forecast/'],
     ['Customer future-value study', 'evidence', './labs/customer-value/'],
