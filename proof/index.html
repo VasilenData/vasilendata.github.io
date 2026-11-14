@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Three focused engineering proofs | Vasilen Kanchev</title>
+<meta name="description" content="Reproduce a billing retry, a failed data refresh and a financial release migration. Exact commands, prerequisites, observations and limits.">
+<link rel="canonical" href="https://vasilendata.github.io/proof/">
+<style>:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#111315;color:#ECEFF1;font:17px/1.65 system-ui,sans-serif}main{max-width:980px;margin:auto;padding:44px 24px 72px}a{color:#7EE0B8;text-underline-offset:3px}a:focus-visible{outline:3px solid #7EE0B8;outline-offset:4px}h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.08;max-width:720px}h2{font-size:1.6rem;line-height:1.2}p{max-width:78ch}header p,.scope,small{color:#A3ACB3}.tag{font-size:.8rem;text-transform:uppercase;letter-spacing:.1em;color:#7EE0B8}article{border-top:1px solid #2B3035;margin-top:40px;padding-top:26px}pre{background:#181B1E;border:1px solid #2B3035;padding:18px;overflow:auto;font:14px/1.6 Consolas,monospace;border-radius:6px}code{font-family:Consolas,monospace}.links{display:flex;gap:12px 22px;flex-wrap:wrap}li{margin:8px 0}.notice{padding:16px 20px;border-left:3px solid #7EE0B8;background:#181B1E;margin-top:28px}footer{border-top:1px solid #2B3035;margin-top:44px;padding-top:20px}</style></head>
+<body><main>
+<nav><a href="../">← Portfolio</a></nav>
+<header><p class="tag">Evidence, not a production claim</p><h1>Three failures worth being able to explain.</h1><p>Run a bounded exercise, inspect what changed, and check what stayed valid. These are local portfolio demonstrations with saved reports and explicit limits.</p></header>
+<div class="notice"><strong>Start with the result; reproduce when you want to go deeper.</strong> Commands run from each repository root after installing its pinned requirements. Use fresh output paths. Database exercises require disposable infrastructure; they are not migrations to run against a working service.</div>
+
+<article id="meterwork"><p class="tag">01 / Meterwork · Python, PostgreSQL, FastAPI</p><h2>A lost response must not become a second charge.</h2>
+<p><strong>Problem:</strong> one worker can commit an event and disappear before its caller receives success. Process-local quotas also multiply when more workers are added.</p>
+<p><strong>Implementation:</strong> shared PostgreSQL admission and a durable event identity. The exercise observes a committed event, kills that exact worker before the response arrives, and retries against the survivor.</p>
+<p><strong>Observed:</strong> the retry is a duplicate; seven events, 77 units and 19,250 microUSD reconcile exactly once. A separate bounded local workload completed 350/350 requests across two workers. That is an offered workload, not a maximum-capacity result.</p>
+<p class="links"><a href="https://vasilendata.github.io/usage-metering-platform/#reconciliation">Explore statements</a><a href="https://github.com/VasilenData/usage-metering-platform/blob/main/docs/MULTIWORKER.md">Read the exercise and raw evidence</a><a href="https://github.com/VasilenData/usage-metering-platform">Inspect code</a></p>
+<p><strong>Prerequisites:</strong> repository history containing the pinned baseline; <code>requirements-dev.txt</code>; an isolated PostgreSQL 17 cluster and control database ending in <code>_test</code>. Set <code>TEST_DATABASE_URL</code> privately. The harness provisions cluster-global test roles.</p>
+<pre><code>python verify_multiworker.py --phase-seconds 10 --output local-evidence/multiworker-new.json</code></pre>
+<p class="scope">Synthetic local traffic; two API workers and one database. The public explorer is read-only. No customer traffic, hosted API, failover or capacity ceiling is demonstrated.</p></article>
+
+<article id="taxi"><p class="tag">02 / NYC Taxi · Dagster, dbt, DuckDB</p><h2>A failed refresh must preserve the last valid release.</h2>
+<p><strong>Problem:</strong> replacing reporting tables before all checks pass can expose a partial or corrupt dataset.</p>
+<p><strong>Implementation:</strong> build and validate a candidate, publish all eight reporting tables together, then check the consumer state independently.</p>
+<p><strong>Observed:</strong> a 30,000-row historical replay rejects a deliberately corrupt candidate, preserves all eight consumer tables and their metadata, and records local incident and recovery receipts. This is separate from the earlier 31.6M-row measurement.</p>
+<p class="links"><a href="../projects/nyc-taxi/">View pipeline results</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform/blob/main/docs/OPERATING_HISTORY.md">Read the exercise and raw evidence</a><a href="https://github.com/VasilenData/nyc-taxi-data-platform">Inspect code</a></p>
+<p><strong>Prerequisites:</strong> <code>requirements-dev.txt</code> and the repository's bundled historical samples. Use fresh local paths; this command requires no cloud account.</p>
+<pre><code>python scripts/operating_replay.py drill --history local-evidence/nyc-run --database local-evidence/nyc-run.duckdb</code></pre>
+<p class="scope">One dated local exercise, not weeks of operation. Notification receipts are local JSON, not delivered email. AWS remains offline-only and undeployed.</p></article>
+
+<article id="finance"><p class="tag">03 / Finance Mart · dbt, SQL, DuckDB, PostgreSQL</p><h2>One report must not mix two releases.</h2>
+<p><strong>Problem:</strong> renaming a metric can break consumers, and several queries through mutable views can straddle a successful promotion.</p>
+<p><strong>Implementation:</strong> keep the v1 model contract, add an explicit v2, validate frozen candidate tables and atomically promote the consumer views and pointer. Multi-query consumers pin one immutable release schema before reading.</p>
+<p><strong>Observed:</strong> both local adapters pass the same 14-check migration exercise: rejected candidate, interrupted promotion, rollback and a historical close rebuilt from frozen sources. A two-connection check pauses a reader across promotion and confirms it retains its complete original release.</p>
+<p class="links"><a href="https://vasilendata.github.io/ecommerce-finance-mart/explorer/">Explore historical finance</a><a href="https://github.com/VasilenData/ecommerce-finance-mart/blob/main/docs/SCHEMA_MIGRATION.md">Read the migration and raw evidence</a><a href="https://github.com/VasilenData/ecommerce-finance-mart">Inspect code</a></p>
+<p><strong>Prerequisites:</strong> the pinned <code>requirements-dbt.txt</code>. The DuckDB exercise uses disposable local databases; PostgreSQL has its own documented dedicated-database setup.</p>
+<pre><code>python -m mart.schema_migration --adapter duckdb --output dist/migration-duckdb-new</code></pre>
+<p class="scope">Synthetic subscription data and local adapters; one publication writer. The separate retail explorer uses historical public data. Databricks revalidation remains pending.</p></article>
+<footer><small>Implementation and review are AI-assisted. Saved reports establish observed system behavior within the stated scope; they do not establish independent human review or unaided interview performance.</small><p><a href="../vasilen-kanchev-cv.pdf">Data Engineer CV</a> · <a href="../vasilen-kanchev-cv-analytics.pdf">Analytics Engineer CV</a> · <a href="mailto:vasilen.business@gmail.com">Contact</a></p></footer>
+</main></body></html>
