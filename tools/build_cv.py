@@ -1,4 +1,4 @@
-"""Build two readable A4 CVs with a Jake's Resume-inspired layout.
+"""Build two readable A4 CVs with an editorial charcoal/teal layout.
 
 python tools/build_cv.py --font-dir C:/Windows/Fonts
 Requires reportlab and pypdf. See TEMPLATE_NOTICE.txt for layout attribution.
@@ -10,7 +10,7 @@ from xml.sax.saxutils import escape
 
 from pypdf import PdfReader
 from reportlab.lib import colors
-from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
+from reportlab.lib.enums import TA_LEFT, TA_RIGHT
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
@@ -20,7 +20,8 @@ from reportlab.platypus import Flowable, KeepTogether, Paragraph, SimpleDocTempl
 INK = colors.HexColor('#20272C')
 MUTED = colors.HexColor('#52616B')
 ACCENT = colors.HexColor('#245348')
-RULE = colors.HexColor('#B4BEC0')
+RULE = colors.HexColor('#CCD8D3')
+SUMMARY_FILL = colors.HexColor('#F3F7F5')
 PAGE_WIDTH, PAGE_HEIGHT = A4
 MARGIN = 44
 WIDTH = PAGE_WIDTH - 2 * MARGIN
@@ -42,19 +43,19 @@ class Section(Flowable):
     def __init__(self, title, font):
         super().__init__()
         self.title, self.font = title.upper(), font
-        self.width, self.height = WIDTH, 30
+        self.width, self.height = WIDTH, 29
         self.keepWithNext = True
 
     def draw(self):
-        text = self.canv.beginText(0, 12)
-        text.setFont(self.font, 10.4)
+        text = self.canv.beginText(0, 11)
+        text.setFont(self.font, 10.2)
         text.setFillColor(ACCENT)
-        text.setCharSpace(1.15)
+        text.setCharSpace(1.25)
         text.textOut(self.title)
         self.canv.drawText(text)
         self.canv.setStrokeColor(RULE)
         self.canv.setLineWidth(0.5)
-        self.canv.line(0, 6, self.width, 6)
+        self.canv.line(0, 5, self.width, 5)
 
 
 def project_text(data, variant, project_key):
@@ -69,19 +70,19 @@ def build(source, output_dir, font_dir=None):
     data = json.loads(source.read_text(encoding='utf-8'))
     regular, bold, italic = register_fonts(font_dir)
     base = ParagraphStyle('base', fontName=regular, fontSize=10.7,
-                          leading=12.9, textColor=INK, alignment=TA_LEFT)
+                          leading=13.1, textColor=INK, alignment=TA_LEFT)
     styles = {
         'body': base,
-        'name': ParagraphStyle('name', parent=base, fontName=bold, fontSize=28,
-                               leading=31, alignment=TA_CENTER, spaceAfter=2),
+        'name': ParagraphStyle('name', parent=base, fontName=bold, fontSize=29,
+                               leading=32, alignment=TA_LEFT, spaceAfter=2),
         'headline': ParagraphStyle('headline', parent=base, fontName=bold, fontSize=11.3,
-                                   leading=14, textColor=ACCENT, alignment=TA_CENTER, spaceAfter=5),
+                                   leading=14, textColor=ACCENT, alignment=TA_LEFT, spaceAfter=5),
         'contact': ParagraphStyle('contact', parent=base, fontSize=9.5, leading=12,
-                                  textColor=MUTED, alignment=TA_CENTER, spaceAfter=2),
-        'summary': ParagraphStyle('summary', parent=base, fontSize=10.7, leading=13.2),
+                                  textColor=MUTED, alignment=TA_LEFT, spaceAfter=2),
+        'summary': ParagraphStyle('summary', parent=base, fontSize=10.7, leading=13.4),
         'company': ParagraphStyle('company', parent=base, fontName=bold, fontSize=11.2,
                                   leading=14, spaceAfter=1),
-        'role': ParagraphStyle('role', parent=base, fontSize=10.1, leading=12.5),
+        'role': ParagraphStyle('role', parent=base, fontSize=10.7, leading=12.8),
         'date': ParagraphStyle('date', parent=base, fontSize=9.8, leading=12.5,
                                textColor=MUTED, alignment=TA_RIGHT),
         'project': ParagraphStyle('project', parent=base, fontName=bold, fontSize=11,
@@ -91,8 +92,8 @@ def build(source, output_dir, font_dir=None):
         'bullet': ParagraphStyle('bullet', parent=base, leftIndent=10, firstLineIndent=0,
                                  bulletIndent=0, bulletFontName=regular,
                                  bulletFontSize=7.2, spaceBefore=3),
-        'skills': ParagraphStyle('skills', parent=base, fontSize=10.1, leading=12.5),
-        'education': ParagraphStyle('education', parent=base, fontSize=10.1, leading=12.5),
+        'skills': ParagraphStyle('skills', parent=base, fontSize=10.7, leading=13.1),
+        'education': ParagraphStyle('education', parent=base, fontSize=10.7, leading=13.1),
     }
 
     def p(text, style='body', raw=False):
@@ -126,7 +127,16 @@ def build(source, output_dir, font_dir=None):
         story.append(p(' &nbsp; | &nbsp; '.join(
             f'<a href="{escape(url)}" color="#20272C">{escape(label)}</a>'
             for label, url in contacts), 'contact', True))
-        story.extend([Spacer(1, 8), p(variant['summary'], 'summary'), Spacer(1, 3)])
+        summary = Table([[p(variant['summary'], 'summary')]], colWidths=[WIDTH], hAlign='LEFT')
+        summary.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, -1), SUMMARY_FILL),
+            ('LINEBEFORE', (0, 0), (0, -1), 2, ACCENT),
+            ('LEFTPADDING', (0, 0), (-1, -1), 10),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 10),
+            ('TOPPADDING', (0, 0), (-1, -1), 7),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 7),
+        ]))
+        story.extend([Spacer(1, 8), summary, Spacer(1, 2)])
 
         story.append(Section('Professional experience', bold))
         for idx, job in enumerate(data['experience']):
@@ -146,7 +156,7 @@ def build(source, output_dir, font_dir=None):
         story.append(Section('Selected projects', bold))
         for idx, project_key in enumerate(variant['projects']):
             project = data['projects'][project_key]
-            title = f'<a href="{escape(project["url"])}" color="#20272C">{escape(project["name"])}</a>'
+            title = f'<a href="{escape(project["url"])}" color="#245348">{escape(project["name"])}</a>'
             block = [Spacer(1, 6)] if idx else []
             block.extend([pair(title, project['stack'], 'project', 'stack', right_width=238),
                           p(selected_copy[project_key])])
@@ -164,7 +174,7 @@ def build(source, output_dir, font_dir=None):
 
         output = output_dir / variant['filename']
         document = SimpleDocTemplate(str(output), pagesize=A4, leftMargin=MARGIN,
-                                     rightMargin=MARGIN, topMargin=30, bottomMargin=30,
+                                     rightMargin=MARGIN, topMargin=31, bottomMargin=30,
                                      title=data['name'] + ' - ' + variant['headline'],
                                      author=data['name'])
         document.build(story)
