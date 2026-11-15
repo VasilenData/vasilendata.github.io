@@ -89,7 +89,7 @@
       "name": "NYC Taxi Data Platform",
       "stack": "Dagster, dbt, DuckDB",
       "url": "https://github.com/VasilenData/nyc-taxi-data-platform",
-      "text": "Built a Dagster/dbt pipeline that reconciled 31.6M historical trips locally; failure tests preserved the last valid release across eight reporting tables."
+      "text": "Reconciled 31.6M historical trips into valid and quarantined records. Versioned classification rules and candidate validation keep rejected corrections from changing the last valid eight-table reporting release."
     },
     "streaming": {
       "name": "Wikipedia Streaming Lakehouse",
@@ -107,20 +107,20 @@
       "name": "E-Commerce Finance Mart",
       "stack": "dbt, SQL, DuckDB, PostgreSQL",
       "url": "https://github.com/VasilenData/ecommerce-finance-mart",
-      "text": "Turned 1.07M public invoice lines into SQL/Excel reporting, passing 124 comparisons; added synthetic dbt subscription models with consistent metrics and traceable corrections."
+      "text": "Turned 1.07M public invoice lines into SQL/Excel reports with 124 passing comparisons. Separate synthetic dbt models distinguish unpaid amounts from credits and preserve reproducible closes on two adapters."
     },
     "meterwork": {
       "name": "Meterwork",
       "stack": "Python, PostgreSQL, FastAPI",
       "url": "https://github.com/VasilenData/usage-metering-platform",
-      "text": "Made changed usage statements explainable through historical prices and event-level corrections; 72 revisions across 24 synthetic accounts matched independent SQL."
+      "text": "Made changed usage statements explainable through historical prices and event-level corrections; 72 revisions across 24 synthetic accounts matched independent SQL, with earlier statements preserved."
     }
   },
   "variants": {
     "data-engineer": {
       "filename": "vasilen-kanchev-cv.pdf",
       "headline": "Data Engineer",
-      "summary": "Data engineer building Python/SQL pipelines on PostgreSQL and AWS RDS. Owns daily cash-flow reporting; seeking a dedicated engineering role focused on reliable data delivery.",
+      "summary": "Data engineer building Python/SQL pipelines for revenue and financial reporting on PostgreSQL and AWS RDS. Owns daily cash-flow reporting; seeking a dedicated role in reliable billing and data systems.",
       "project_skills": "Dagster, DuckDB, Git, pytest, GitHub Actions (CI/CD), Airflow (local)",
       "projects": [
         "meterwork",
@@ -128,15 +128,15 @@
         "finance"
       ],
       "project_texts": {
-        "meterwork": "Built a PostgreSQL usage API that deduplicates retries and blocks cross-account access; verified concurrent requests, restricted permissions and account quotas in synthetic CI.",
-        "taxi": "Built a Dagster/dbt pipeline that reconciled 31.6M historical trips locally; failure tests preserved the last valid release across eight reporting tables.",
-        "finance": "Built dbt subscription models on DuckDB and PostgreSQL; late corrections and historical backfills matched full rebuilds and separate reference calculations on synthetic data."
+        "meterwork": "Built a PostgreSQL usage API with shared account quotas and restricted runtime access. In a local two-worker exercise, retries after an observed commit and worker kill preserved one charge per event.",
+        "taxi": "Built a Dagster/dbt pipeline that reconciled 31.6M historical trips locally. A separate 30K-row failure/recovery exercise preserved all eight reporting tables and recorded incident and recovery receipts.",
+        "finance": "Built dbt subscription models on DuckDB and PostgreSQL; corrections and backfills matched full rebuilds. A local migration exercise tested frozen releases, failed promotion and rollback against an independent oracle."
       }
     },
     "analytics-engineer": {
       "filename": "vasilen-kanchev-cv-analytics.pdf",
       "headline": "Analytics Engineer",
-      "summary": "SQL/dbt-focused data professional building financial reporting and shared metrics. Owns daily cash-flow reporting and has delivered KPI reporting for 15+ stakeholders; seeking an Analytics Engineer role.",
+      "summary": "SQL/dbt-focused data professional building financial reporting and shared metrics. Owns daily cash-flow reporting and has served 15+ KPI stakeholders; seeking a dedicated Analytics Engineer role in revenue and finance.",
       "project_skills": "Dimensional modeling, reconciliation, DuckDB, data contracts, Git, pytest, GitHub Actions",
       "projects": [
         "finance",
@@ -144,9 +144,9 @@
         "taxi"
       ],
       "project_texts": {
-        "finance": "Turned 1.07M public invoice lines into SQL/Excel reporting, passing 124 comparisons; added synthetic dbt subscription models with consistent metrics and traceable corrections.",
-        "meterwork": "Made changed usage statements explainable through historical prices and event-level corrections; 72 revisions across 24 synthetic accounts matched independent SQL.",
-        "taxi": "Reconciled 31.6M historical trips into valid and quarantined records; tested changed classification rules while preserving the last valid reporting release."
+        "finance": "Turned 1.07M public invoice lines into SQL/Excel reports with 124 passing comparisons. Separate synthetic dbt models distinguish unpaid amounts from credits and preserve reproducible closes on two adapters.",
+        "meterwork": "Made changed usage statements explainable through historical prices and event-level corrections; 72 revisions across 24 synthetic accounts matched independent SQL, with earlier statements preserved.",
+        "taxi": "Reconciled 31.6M historical trips into valid and quarantined records. Versioned classification rules and candidate validation keep rejected corrections from changing the last valid eight-table reporting release."
       }
     }
   }
