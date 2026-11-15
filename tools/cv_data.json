@@ -128,7 +128,7 @@
         "finance"
       ],
       "project_texts": {
-        "meterwork": "Built a PostgreSQL usage API with shared account quotas and restricted runtime access. In a local two-worker exercise, retries after an observed commit and worker kill preserved one charge per event.",
+        "meterwork": "Built a PostgreSQL usage API with shared quotas and restricted runtime access. Verified retry safety after worker failure, then exported immutable revisions for independently reconciled finance reporting (synthetic data).",
         "taxi": "Built a Dagster/dbt pipeline that reconciled 31.6M historical trips locally. A separate 30K-row failure/recovery exercise preserved all eight reporting tables and recorded incident and recovery receipts.",
         "finance": "Built dbt subscription models on DuckDB and PostgreSQL; corrections and backfills matched full rebuilds. A local migration exercise tested frozen releases, failed promotion and rollback against an independent oracle."
       }
@@ -145,7 +145,7 @@
       ],
       "project_texts": {
         "finance": "Turned 1.07M public invoice lines into SQL/Excel reports with 124 passing comparisons. Separate synthetic dbt models distinguish unpaid amounts from credits and preserve reproducible closes on two adapters.",
-        "meterwork": "Made changed usage statements explainable through historical prices and event-level corrections; 72 revisions across 24 synthetic accounts matched independent SQL, with earlier statements preserved.",
+        "meterwork": "Reconciled 72 revisions across 24 synthetic accounts against independent SQL. Built versioned USD exports; a separate finance receiver rerates source events and preserves the last good report across eight rejected-delivery scenarios.",
         "taxi": "Reconciled 31.6M historical trips into valid and quarantined records. Versioned classification rules and candidate validation keep rejected corrections from changing the last valid eight-table reporting release."
       }
     }
